@@ -2,8 +2,9 @@ package config
 
 import (
 	"fmt"
+	//"github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
 var (
