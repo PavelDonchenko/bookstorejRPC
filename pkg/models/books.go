@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/config"
 	"github.com/jinzhu/gorm"
 	"html"
 	"strings"
@@ -21,12 +20,6 @@ type Book struct {
 	UpdatedAt  time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
-func init() {
-	config.Connect()
-	db = config.GetDB()
-	db.AutoMigrate(&Book{})
-}
-
 func (b *Book) Prepare() {
 	b.ID = 0
 	b.Name = html.EscapeString(strings.TrimSpace(b.Name))
@@ -39,7 +32,7 @@ func (b *Book) Prepare() {
 func (b *Book) Validate() error {
 
 	if b.Name == "" {
-		return errors.New("Required Nmae")
+		return errors.New("Required Name")
 	}
 	if b.BookAuthor == "" {
 		return errors.New("Required Author")
@@ -83,7 +76,7 @@ func (b *Book) GetAllBooks(db *gorm.DB) (*[]Book, error) {
 	return &books, nil
 }
 
-func (b *Book) FindPostByID(db *gorm.DB, bid uint64) (*Book, error) {
+func (b *Book) GetBookById(db *gorm.DB, bid uint64) (*Book, error) {
 	var err error
 	err = db.Debug().Model(&Book{}).Where("id = ?", bid).Take(&b).Error
 	if err != nil {
@@ -98,7 +91,7 @@ func (b *Book) FindPostByID(db *gorm.DB, bid uint64) (*Book, error) {
 	return b, nil
 }
 
-func (b *Book) UpdateAPost(db *gorm.DB) (*Book, error) {
+func (b *Book) UpdateBook(db *gorm.DB) (*Book, error) {
 
 	var err error
 
@@ -115,7 +108,7 @@ func (b *Book) UpdateAPost(db *gorm.DB) (*Book, error) {
 	return b, nil
 }
 
-func (b *Book) DeleteAPost(db *gorm.DB, bid uint64, uid uint32) (int64, error) {
+func (b *Book) DeleteBook(db *gorm.DB, bid uint64, uid uint32) (int64, error) {
 
 	db = db.Debug().Model(&Book{}).Where("id = ? and user_id = ?", bid, uid).Take(&Book{}).Delete(&Book{})
 

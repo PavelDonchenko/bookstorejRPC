@@ -1,24 +1,22 @@
-package routes
+package controllers
 
-import (
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/controllers"
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/middlewares"
-	"github.com/gorilla/mux"
-)
+import "github.com/PavelDonchenko/40projects/go-bookstore/pkg/middlewares"
 
-var RegisterBookStoreRoutes = func(router *mux.Router) {
+func (s *Server) RegisterBookStoreRoutes() {
+	// login route
+	s.Router.HandleFunc("/login", middlewares.SetMiddlewareJSON(s.Login)).Methods("POST")
+
 	//user routes
-	var s *controllers.Server
-	router.HandleFunc("/users", middlewares.SetMiddlewareJSON(s.CreateUser)).Methods("POST")
-	router.HandleFunc("/users", middlewares.SetMiddlewareJSON(s.GetAllUsers)).Methods("GET")
-	router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(s.GetUserById)).Methods("GET")
-	router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateUser))).Methods("PUT")
-	router.HandleFunc("/users/{id}", middlewares.SetMiddlewareAuthentication(s.DeleteUser)).Methods("DELETE")
+	s.Router.HandleFunc("/users", middlewares.SetMiddlewareJSON(s.CreateUser)).Methods("POST")
+	s.Router.HandleFunc("/users", middlewares.SetMiddlewareJSON(s.GetAllUsers)).Methods("GET")
+	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(s.GetUserById)).Methods("GET")
+	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateUser))).Methods("PUT")
+	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareAuthentication(s.DeleteUser)).Methods("DELETE")
 
 	//book routes
-	router.HandleFunc("/books/", controllers.CreateBook).Methods("POST")
-	router.HandleFunc("/books/", controllers.GetBook).Methods("GET")
-	router.HandleFunc("/books/{id}", controllers.GetBookById).Methods("GET")
-	router.HandleFunc("/books/{id}", controllers.DeleteBook).Methods("DELETE")
-	router.HandleFunc("/books/{id}", controllers.UpdateBook).Methods("PUT")
+	s.Router.HandleFunc("/books", middlewares.SetMiddlewareJSON(s.CreateBook)).Methods("POST")
+	s.Router.HandleFunc("/books", middlewares.SetMiddlewareJSON(s.GetAllBooks)).Methods("GET")
+	s.Router.HandleFunc("/books/{id}", middlewares.SetMiddlewareJSON(s.GetBookById)).Methods("GET")
+	s.Router.HandleFunc("/books/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateBook))).Methods("PUT")
+	s.Router.HandleFunc("/books/{id}", middlewares.SetMiddlewareAuthentication(s.DeleteBook)).Methods("DELETE")
 }
