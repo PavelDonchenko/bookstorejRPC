@@ -22,8 +22,8 @@ func GetBook(w http.ResponseWriter, r *http.Request) {
 
 func GetBookById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	bookId := vars["id"]
-	id, err := strconv.ParseInt(bookId, 0, 0)
+	bookID := vars["id"]
+	id, err := strconv.ParseInt(bookID, 0, 0)
 	if err != nil {
 		fmt.Println("Error while paring")
 	}
@@ -44,8 +44,8 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 
 func DeleteBook(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	bookId := vars["id"]
-	id, err := strconv.ParseInt(bookId, 0, 0)
+	bookID := vars["id"]
+	id, err := strconv.ParseInt(bookID, 0, 0)
 	if err != nil {
 		fmt.Println("Error while paring")
 	}
@@ -60,8 +60,8 @@ func UpdateBook(w http.ResponseWriter, r *http.Request) {
 	var updateBook = &models.Book{}
 	utils.ParseBody(r, updateBook)
 	vars := mux.Vars(r)
-	bookId := vars["id"]
-	id, err := strconv.ParseInt(bookId, 0, 0)
+	bookID := vars["id"]
+	id, err := strconv.ParseInt(bookID, 0, 0)
 	if err != nil {
 		fmt.Println("Error while paring")
 	}
