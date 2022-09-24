@@ -10,25 +10,6 @@ import (
 	"net/http"
 )
 
-//var (
-//	db *gorm.DB
-//)
-//
-//func Connect() {
-//	dns := "pavel:mysqlpaha100688@tcp(127.0.0.1:3306)/testdb2?charset=utf8mb4&parseTime=True&loc=Local"
-//	d, err :=
-//		gorm.Open(mysql.Open(dns), &gorm.Config{})
-//	if err != nil {
-//		panic(err)
-//	}
-//	db = d
-//	fmt.Println(db)
-//}
-//
-//func GetDB() *gorm.DB {
-//	return db
-//}
-
 type Server struct {
 	DB     *gorm.DB
 	Router *mux.Router
@@ -39,7 +20,7 @@ func (s *Server) Initialize(Dbdriver string) {
 	var err error
 
 	if Dbdriver == "mysql" {
-		dns := "pavel:mysqlpaha100688@tcp(127.0.0.1:3306)/testdb2?charset=utf8mb4&parseTime=True&loc=Local"
+		dns := "pavel:mysqlpaha100688@tcp(bookstore-mysql:3306)/testdb2?charset=utf8mb4&parseTime=True&loc=Local"
 		s.DB, err = gorm.Open(Dbdriver, dns)
 		if err != nil {
 			fmt.Printf("Cannot connect to %s database\n", Dbdriver)
