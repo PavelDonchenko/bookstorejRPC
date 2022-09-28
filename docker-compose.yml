@@ -1,0 +1,42 @@
+version: '3'
+services:
+  app:
+    container_name: bookstore_app
+    build: .
+    ports:
+      - 6666:6666
+    restart: on-failure
+    volumes:
+      - api:/usr/src/app/
+    depends_on:
+      -   bookstore-mysql
+    networks:
+      - fullstack
+
+
+  bookstore-mysql:
+    image: mysql:latest
+    container_name: bookstore_db_mysql
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_HOST=bookstore-mysql
+      - MYSQL_USER=pavel
+      - MYSQL_PASSWORD=mysqlpaha100688
+      - MYSQL_DATABASE=testdb2
+      - MYSQL_ROOT_PASSWORD=mysqlpaha100688
+    volumes:
+      - database_mysql:/var/lib/mysql
+    networks:
+      - fullstack
+
+
+
+volumes:
+  api:
+  database_mysql:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  fullstack:
+    driver: bridge
