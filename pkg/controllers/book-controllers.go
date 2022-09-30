@@ -71,6 +71,7 @@ func (server *Server) GetAllBooks(w http.ResponseWriter, r *http.Request) {
 func (server *Server) GetBookById(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
+
 	bid, err := strconv.ParseUint(vars["id"], 10, 64)
 	if err != nil {
 		responses.JsonError(w, http.StatusBadRequest, err)
