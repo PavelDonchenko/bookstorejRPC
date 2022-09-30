@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/PavelDonchenko/40projects/go-bookstore/cmd/server"
+	"github.com/PavelDonchenko/bookstoreCRUD/cmd/server"
 	"log"
 	"os"
 	"os/signal"

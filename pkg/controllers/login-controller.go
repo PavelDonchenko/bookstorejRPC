@@ -14,7 +14,7 @@ import (
 func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		responses.JsonError(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 
@@ -22,7 +22,7 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 
 	err = json.Unmarshal(body, &user)
 	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		responses.JsonError(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 
@@ -30,7 +30,7 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 
 	err = user.Validate("login")
 	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		responses.JsonError(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 
@@ -38,10 +38,10 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		formattedError := utils.FormatError(err.Error())
-		responses.ERROR(w, http.StatusUnprocessableEntity, formattedError)
+		responses.JsonError(w, http.StatusUnprocessableEntity, formattedError)
 		return
 	}
-	responses.JSON(w, http.StatusOK, token)
+	responses.JsonFormat(w, http.StatusOK, token)
 }
 
 func (s *Server) SignIn(email, password string) (string, error) {

@@ -16,11 +16,9 @@ type Server struct {
 }
 
 func (s *Server) Initialize(Dbdriver string) {
-
 	var err error
-
 	if Dbdriver == "mysql" {
-		dns := "pavel:mysqlpaha100688@tcp(bookstore-mysql:3306)/testdb2?charset=utf8mb4&parseTime=True&loc=Local"
+		dns := "pavel:mysqlpaha100688@tcp(bookstore-mysql)/testdb2?charset=utf8mb4&parseTime=True&loc=Local"
 		s.DB, err = gorm.Open(Dbdriver, dns)
 		if err != nil {
 			fmt.Printf("Cannot connect to %s database\n", Dbdriver)
