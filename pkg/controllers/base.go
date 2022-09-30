@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/models"
+	"github.com/PavelDonchenko/bookstoreCRUD/pkg/models"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"

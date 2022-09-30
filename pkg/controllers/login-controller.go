@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/PavelDonchenko/40projects/go-bookstore/api/responses"
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/auth"
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/models"
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/utils"
+	"github.com/PavelDonchenko/bookstoreCRUD/api/responses"
+	"github.com/PavelDonchenko/bookstoreCRUD/pkg/auth"
+	"github.com/PavelDonchenko/bookstoreCRUD/pkg/models"
+	"github.com/PavelDonchenko/bookstoreCRUD/pkg/utils"
 	"golang.org/x/crypto/bcrypt"
 	"io"
 	"net/http"

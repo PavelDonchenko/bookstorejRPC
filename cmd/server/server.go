@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/controllers"
+	"github.com/PavelDonchenko/bookstoreCRUD/pkg/controllers"
 )
 
 var server = controllers.Server{}

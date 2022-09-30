@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/PavelDonchenko/40projects/go-bookstore/api/responses"
-	"github.com/PavelDonchenko/40projects/go-bookstore/pkg/auth"
+	"github.com/PavelDonchenko/bookstoreCRUD/api/responses"
+	"github.com/PavelDonchenko/bookstoreCRUD/pkg/auth"
 )
 
 func SetMiddlewareJSON(next http.HandlerFunc) http.HandlerFunc {

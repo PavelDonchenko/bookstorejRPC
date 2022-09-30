@@ -1,6 +1,6 @@
 package controllers
 
-import "github.com/PavelDonchenko/40projects/go-bookstore/pkg/middlewares"
+import "github.com/PavelDonchenko/bookstoreCRUD/pkg/middlewares"
 
 func (s *Server) RegisterBookStoreRoutes() {
 	// login route
