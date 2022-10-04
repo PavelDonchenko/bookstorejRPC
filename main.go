@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/PavelDonchenko/bookstoreCRUD/cmd/server"
 	"log"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/PavelDonchenko/bookstoreCRUD/cmd/server"
 )
 
 func main() {
