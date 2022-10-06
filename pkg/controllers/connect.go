@@ -16,10 +16,10 @@ type Server struct {
 	Router *mux.Router
 }
 
-func (s *Server) Initialize(Dbdriver string) {
+func (s *Server) Initialize(Dbdriver, user, password, host, dbname string) {
 	var err error
 	if Dbdriver == "mysql" {
-		dns := "pavel:mysqlpaha100688@tcp(bookstore-mysql:3306)/testdb2?charset=utf8mb4&parseTime=True&loc=Local"
+		dns := user + ":" + password + "@tcp(" + host + ")/" + dbname + "?charset=utf8mb4&parseTime=True&loc=Local"
 		s.DB, err = gorm.Open(Dbdriver, dns)
 		if err != nil {
 			fmt.Printf("Cannot connect to %s database\n", Dbdriver)
