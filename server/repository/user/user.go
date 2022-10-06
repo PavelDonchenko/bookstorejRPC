@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/PavelDonchenko/bookstorejRPC/models"
+	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 	"github.com/badoux/checkmail"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"

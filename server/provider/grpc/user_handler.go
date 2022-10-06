@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	pb "github.com/PavelDonchenko/bookstorejRPC/gen/proto"
-	"github.com/PavelDonchenko/bookstorejRPC/models"
-	service "github.com/PavelDonchenko/bookstorejRPC/service/user"
+	pb "github.com/PavelDonchenko/bookstorejRPC/server/gen/proto"
+	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
+	service "github.com/PavelDonchenko/bookstorejRPC/server/service/user"
 )
 
 type UserHandler struct {

@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/PavelDonchenko/bookstorejRPC/cmd/server"
+	"github.com/PavelDonchenko/bookstorejRPC/server/cmd/server"
 )
 
 func main() {

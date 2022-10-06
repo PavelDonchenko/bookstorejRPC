@@ -1,9 +1,9 @@
 package service
 
 import (
-	pb "github.com/PavelDonchenko/bookstorejRPC/gen/proto"
-	model "github.com/PavelDonchenko/bookstorejRPC/models"
-	repository "github.com/PavelDonchenko/bookstorejRPC/repository/user"
+	pb "github.com/PavelDonchenko/bookstorejRPC/server/gen/proto"
+	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
+	repository "github.com/PavelDonchenko/bookstorejRPC/server/repository/user"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
