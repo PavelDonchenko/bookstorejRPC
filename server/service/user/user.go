@@ -25,8 +25,8 @@ func (us *UserService) GetOne(id uint32) (*pb.GetUserResponse, error) {
 		Nickname: user.Nickname,
 		Email:    user.Email,
 		Password: user.Password,
-		CrateAt:  timestamppb.New(user.CreatedAt),
-		UpdateAt: timestamppb.New(user.UpdatedAt),
+		CrateAt:  timestamppb.Now(),
+		UpdateAt: timestamppb.Now(),
 	}
 	return &pb.GetUserResponse{User: &item}, err
 }
@@ -41,8 +41,8 @@ func (us *UserService) GetAll() (*pb.GetAllAUserResponse, error) {
 			Nickname: v.Nickname,
 			Email:    v.Email,
 			Password: v.Password,
-			CrateAt:  timestamppb.New(v.CreatedAt),
-			UpdateAt: timestamppb.New(v.UpdatedAt),
+			CrateAt:  timestamppb.Now(),
+			UpdateAt: timestamppb.Now(),
 		}
 		items = append(items, u)
 	}
@@ -57,23 +57,23 @@ func (us *UserService) Create(u model.User) (*pb.CreateUserResponse, error) {
 		Nickname: user.Nickname,
 		Email:    user.Email,
 		Password: user.Password,
-		CrateAt:  timestamppb.New(user.CreatedAt),
-		UpdateAt: timestamppb.New(user.UpdatedAt),
+		CrateAt:  timestamppb.Now(),
+		UpdateAt: timestamppb.Now(),
 	}
 
 	return &pb.CreateUserResponse{User: &item}, err
 
 }
 func (us *UserService) Update(u model.User) (*pb.UpdateUserResponse, error) {
-	user, err := us.userRepo.Update(u.ID)
+	user, err := us.userRepo.Update(u)
 
 	item := pb.UserItem{
 		Id:       uint32(user.ID),
 		Nickname: user.Nickname,
 		Email:    user.Email,
 		Password: user.Password,
-		CrateAt:  timestamppb.New(user.CreatedAt),
-		UpdateAt: timestamppb.New(user.UpdatedAt),
+		CrateAt:  timestamppb.Now(),
+		UpdateAt: timestamppb.Now(),
 	}
 
 	return &pb.UpdateUserResponse{User: &item}, err

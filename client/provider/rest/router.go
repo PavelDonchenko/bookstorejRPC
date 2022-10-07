@@ -16,7 +16,7 @@ func CreateRouter(c *controllers.BaseHandler) {
 	router.GET("/users/:id", h.GetOne)
 	router.GET("/users", h.GetAll)
 	router.POST("/users", h.Create)
-	router.PUT("/users", h.Update)
+	router.PUT("/users/update", h.Update)
 	router.DELETE("/users/:id", h.Delete)
 
 	router.Run(":8081")

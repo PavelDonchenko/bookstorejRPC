@@ -1,7 +1,9 @@
 APP_NAME=bookstorecrud
 
 create_proto:
+	cd server; \
 	protoc --proto_path=proto proto/*.proto --go_out=gen/
+	cd server; \
 	protoc --proto_path=proto proto/*.proto --go-grpc_out=gen/
 
 clean_proto:
@@ -16,13 +18,25 @@ dev: ## Run container in development mode
 up: ## Spin up the project
 	docker-compose up
 
+start: ## Start running containers
+	docker-compose start
+
 stop: ## Stop running containers
-	docker stop
+	docker-compose stop
 
 rm: stop ## Stop and remove running containers
 	docker rm $(APP_NAME)
 
-lint: ## Run golangci-lint
+lintS: ## Run golangci-lint on Server
+	cd server; \
 	golangci-lint run
+	cd server; \
+	go vet ./...
+	echo "Golangci-lint and vet tests are finished successful"
+
+lintC: ## Run golangci-lint on Client
+	cd client; \
+	golangci-lint run
+	cd client; \
 	go vet ./...
 	echo "Golangci-lint and vet tests are finished successful"

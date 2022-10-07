@@ -2,8 +2,8 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"html"
-	"log"
 	"strings"
 	"time"
 
@@ -121,30 +121,14 @@ func (u *UserRepo) Create(user model.User) (model.User, error) {
 
 	return user, err
 }
-func (u *UserRepo) Update(id uint32) (model.User, error) {
-	err := u.BeforeSave()
-	if err != nil {
-		log.Fatal(err)
+func (u *UserRepo) Update(user model.User) (model.User, error) {
+	if err := u.db.First(&user).Error; err != nil {
+		return user, err
 	}
 
-	db := u.db.Model(&model.User{}).Where("id = ?", id).Take(&model.User{}).UpdateColumns(
-		map[string]interface{}{
-			"password":   u.user.Password,
-			"nickname":   u.user.Nickname,
-			"email":      u.user.Email,
-			"updated_at": time.Now(),
-		},
-	)
-	if db.Error != nil {
-		return model.User{}, err
-	}
-
-	err = db.Debug().Model(&model.User{}).Where("id = ?", id).Take(&u.user).Error
-	if err != nil {
-		return model.User{}, err
-	}
-
-	return u.user, nil
+	err := u.db.Model(&user).Updates(&user).Error
+	fmt.Println(err)
+	return user, err
 }
 func (u *UserRepo) Delete(id uint32) (bool, error) {
 	db := u.db.Debug().Model(&model.User{}).Where("id = ?", id).Take(&model.User{}).Delete(&model.User{})
