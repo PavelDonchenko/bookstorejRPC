@@ -14,18 +14,22 @@ func NewBaseBookHandler(client pb.BookClient) *BaseBookHandler {
 	return &BaseBookHandler{grpcClient: client}
 }
 
-func (bh *BaseBookHandler) GetAll() (*pb.GetAllBooksResponse, error) {
-	return bh.grpcClient.GetAll(context.Background(), &pb.GetAllBooksRequest{})
+func (bh *BaseBookHandler) GetAllBooks(page uint32) (*pb.GetAllBooksResponse, error) {
+	return bh.grpcClient.GetAllBooks(context.Background(), &pb.GetAllBooksRequest{Page: page})
 }
-func (bh *BaseBookHandler) Get(id uint32) (*pb.GetBookResponse, error) {
-	return bh.grpcClient.GetOne(context.Background(), &pb.GetBookRequest{Id: id})
+
+func (bh *BaseBookHandler) GetBook(id uint32) (*pb.GetBookResponse, error) {
+	return bh.grpcClient.GetBook(context.Background(), &pb.GetBookRequest{Id: id})
 }
-func (bh *BaseBookHandler) Create(u *pb.BookItem) (*pb.CreateBookResponse, error) {
-	return bh.grpcClient.Create(context.Background(), &pb.CreateBookRequest{Book: u})
+
+func (bh *BaseBookHandler) CreateBook(u *pb.BookItem) (*pb.CreateBookResponse, error) {
+	return bh.grpcClient.CreateBook(context.Background(), &pb.CreateBookRequest{Book: u})
 }
-func (bh *BaseBookHandler) Update(u *pb.BookItem) (*pb.UpdateBookResponse, error) {
-	return bh.grpcClient.Update(context.Background(), &pb.UpdateBookRequest{Book: u})
+
+func (bh *BaseBookHandler) UpdateBook(u *pb.BookItem) (*pb.UpdateBookResponse, error) {
+	return bh.grpcClient.UpdateBook(context.Background(), &pb.UpdateBookRequest{Book: u})
 }
-func (bh *BaseBookHandler) Delete(id uint32) (*pb.DeleteBookResponse, error) {
-	return bh.grpcClient.Delete(context.Background(), &pb.DeleteBookRequest{Id: id})
+
+func (bh *BaseBookHandler) DeleteBook(id uint32) (*pb.DeleteBookResponse, error) {
+	return bh.grpcClient.DeleteBook(context.Background(), &pb.DeleteBookRequest{Id: id})
 }

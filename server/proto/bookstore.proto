@@ -24,19 +24,19 @@ message BookItem {
 }
 
 service User {
-  rpc GetOne(GetUserRequest) returns (GetUserResponse);
-  rpc GetAll(GetAllAUserRequest) returns (GetAllAUserResponse);
-  rpc Create(CreateUserRequest) returns (CreateUserResponse);
-  rpc Update(UpdateUserRequest) returns (UpdateUserResponse);
-  rpc Delete(DeleteUserRequest) returns (DeleteUserResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
 }
 
 service Book {
-  rpc GetOne(GetBookRequest) returns (GetBookResponse);
-  rpc GetAll(GetAllBooksRequest) returns (GetAllBooksResponse);
-  rpc Create(CreateBookRequest) returns (CreateBookResponse);
-  rpc Update(UpdateBookRequest) returns (UpdateBookResponse);
-  rpc Delete(DeleteBookRequest) returns (DeleteBookResponse);
+  rpc GetBook(GetBookRequest) returns (GetBookResponse);
+  rpc GetAllBooks(GetAllBooksRequest) returns (GetAllBooksResponse);
+  rpc CreateBook(CreateBookRequest) returns (CreateBookResponse);
+  rpc UpdateBook(UpdateBookRequest) returns (UpdateBookResponse);
+  rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
 }
 
 message GetUserRequest {
@@ -47,9 +47,11 @@ message GetUserResponse {
     UserItem user = 1;
 }
 
-message GetAllAUserRequest {}
+message GetAllUsersRequest {
+  uint32 page = 1;
+}
 
-message GetAllAUserResponse {
+message GetAllUsersResponse {
   repeated UserItem user = 1;
 }
 
@@ -85,7 +87,9 @@ message GetBookResponse {
   BookItem book = 1;
 }
 
-message GetAllBooksRequest {}
+message GetAllBooksRequest {
+  uint32 page = 1;
+}
 
 message GetAllBooksResponse {
   repeated BookItem book = 1;

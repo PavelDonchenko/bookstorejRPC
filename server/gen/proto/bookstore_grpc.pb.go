@@ -22,11 +22,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	GetOne(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
-	GetAll(ctx context.Context, in *GetAllAUserRequest, opts ...grpc.CallOption) (*GetAllAUserResponse, error)
-	Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
-	Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
-	Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
+	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	GetAllUsers(ctx context.Context, in *GetAllUsersRequest, opts ...grpc.CallOption) (*GetAllUsersResponse, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
+	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 }
 
 type userClient struct {
@@ -37,45 +37,45 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) GetOne(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
+func (c *userClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
 	out := new(GetUserResponse)
-	err := c.cc.Invoke(ctx, "/main.User/GetOne", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.User/GetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) GetAll(ctx context.Context, in *GetAllAUserRequest, opts ...grpc.CallOption) (*GetAllAUserResponse, error) {
-	out := new(GetAllAUserResponse)
-	err := c.cc.Invoke(ctx, "/main.User/GetAll", in, out, opts...)
+func (c *userClient) GetAllUsers(ctx context.Context, in *GetAllUsersRequest, opts ...grpc.CallOption) (*GetAllUsersResponse, error) {
+	out := new(GetAllUsersResponse)
+	err := c.cc.Invoke(ctx, "/main.User/GetAllUsers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Create(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+func (c *userClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
 	out := new(CreateUserResponse)
-	err := c.cc.Invoke(ctx, "/main.User/Create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.User/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Update(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
+func (c *userClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
 	out := new(UpdateUserResponse)
-	err := c.cc.Invoke(ctx, "/main.User/Update", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.User/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
+func (c *userClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
 	out := new(DeleteUserResponse)
-	err := c.cc.Invoke(ctx, "/main.User/Delete", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.User/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -86,11 +86,11 @@ func (c *userClient) Delete(ctx context.Context, in *DeleteUserRequest, opts ...
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	GetOne(context.Context, *GetUserRequest) (*GetUserResponse, error)
-	GetAll(context.Context, *GetAllAUserRequest) (*GetAllAUserResponse, error)
-	Create(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
-	Update(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
-	Delete(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
+	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	GetAllUsers(context.Context, *GetAllUsersRequest) (*GetAllUsersResponse, error)
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
+	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
+	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -98,20 +98,20 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) GetOne(context.Context, *GetUserRequest) (*GetUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
+func (UnimplementedUserServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServer) GetAll(context.Context, *GetAllAUserRequest) (*GetAllAUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
+func (UnimplementedUserServer) GetAllUsers(context.Context, *GetAllUsersRequest) (*GetAllUsersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
 }
-func (UnimplementedUserServer) Create(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (UnimplementedUserServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedUserServer) Update(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+func (UnimplementedUserServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedUserServer) Delete(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+func (UnimplementedUserServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -126,92 +126,92 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 	s.RegisterService(&User_ServiceDesc, srv)
 }
 
-func _User_GetOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).GetOne(ctx, in)
+		return srv.(UserServer).GetUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.User/GetOne",
+		FullMethod: "/main.User/GetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetOne(ctx, req.(*GetUserRequest))
+		return srv.(UserServer).GetUser(ctx, req.(*GetUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAllAUserRequest)
+func _User_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllUsersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).GetAll(ctx, in)
+		return srv.(UserServer).GetAllUsers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.User/GetAll",
+		FullMethod: "/main.User/GetAllUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetAll(ctx, req.(*GetAllAUserRequest))
+		return srv.(UserServer).GetAllUsers(ctx, req.(*GetAllUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Create(ctx, in)
+		return srv.(UserServer).CreateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.User/Create",
+		FullMethod: "/main.User/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Create(ctx, req.(*CreateUserRequest))
+		return srv.(UserServer).CreateUser(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Update(ctx, in)
+		return srv.(UserServer).UpdateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.User/Update",
+		FullMethod: "/main.User/UpdateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Update(ctx, req.(*UpdateUserRequest))
+		return srv.(UserServer).UpdateUser(ctx, req.(*UpdateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Delete(ctx, in)
+		return srv.(UserServer).DeleteUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.User/Delete",
+		FullMethod: "/main.User/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Delete(ctx, req.(*DeleteUserRequest))
+		return srv.(UserServer).DeleteUser(ctx, req.(*DeleteUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -224,24 +224,24 @@ var User_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetOne",
-			Handler:    _User_GetOne_Handler,
+			MethodName: "GetUser",
+			Handler:    _User_GetUser_Handler,
 		},
 		{
-			MethodName: "GetAll",
-			Handler:    _User_GetAll_Handler,
+			MethodName: "GetAllUsers",
+			Handler:    _User_GetAllUsers_Handler,
 		},
 		{
-			MethodName: "Create",
-			Handler:    _User_Create_Handler,
+			MethodName: "CreateUser",
+			Handler:    _User_CreateUser_Handler,
 		},
 		{
-			MethodName: "Update",
-			Handler:    _User_Update_Handler,
+			MethodName: "UpdateUser",
+			Handler:    _User_UpdateUser_Handler,
 		},
 		{
-			MethodName: "Delete",
-			Handler:    _User_Delete_Handler,
+			MethodName: "DeleteUser",
+			Handler:    _User_DeleteUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -252,11 +252,11 @@ var User_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BookClient interface {
-	GetOne(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error)
-	GetAll(ctx context.Context, in *GetAllBooksRequest, opts ...grpc.CallOption) (*GetAllBooksResponse, error)
-	Create(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*CreateBookResponse, error)
-	Update(ctx context.Context, in *UpdateBookRequest, opts ...grpc.CallOption) (*UpdateBookResponse, error)
-	Delete(ctx context.Context, in *DeleteBookRequest, opts ...grpc.CallOption) (*DeleteBookResponse, error)
+	GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error)
+	GetAllBooks(ctx context.Context, in *GetAllBooksRequest, opts ...grpc.CallOption) (*GetAllBooksResponse, error)
+	CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*CreateBookResponse, error)
+	UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...grpc.CallOption) (*UpdateBookResponse, error)
+	DeleteBook(ctx context.Context, in *DeleteBookRequest, opts ...grpc.CallOption) (*DeleteBookResponse, error)
 }
 
 type bookClient struct {
@@ -267,45 +267,45 @@ func NewBookClient(cc grpc.ClientConnInterface) BookClient {
 	return &bookClient{cc}
 }
 
-func (c *bookClient) GetOne(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error) {
+func (c *bookClient) GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error) {
 	out := new(GetBookResponse)
-	err := c.cc.Invoke(ctx, "/main.Book/GetOne", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.Book/GetBook", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *bookClient) GetAll(ctx context.Context, in *GetAllBooksRequest, opts ...grpc.CallOption) (*GetAllBooksResponse, error) {
+func (c *bookClient) GetAllBooks(ctx context.Context, in *GetAllBooksRequest, opts ...grpc.CallOption) (*GetAllBooksResponse, error) {
 	out := new(GetAllBooksResponse)
-	err := c.cc.Invoke(ctx, "/main.Book/GetAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.Book/GetAllBooks", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *bookClient) Create(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*CreateBookResponse, error) {
+func (c *bookClient) CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*CreateBookResponse, error) {
 	out := new(CreateBookResponse)
-	err := c.cc.Invoke(ctx, "/main.Book/Create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.Book/CreateBook", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *bookClient) Update(ctx context.Context, in *UpdateBookRequest, opts ...grpc.CallOption) (*UpdateBookResponse, error) {
+func (c *bookClient) UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...grpc.CallOption) (*UpdateBookResponse, error) {
 	out := new(UpdateBookResponse)
-	err := c.cc.Invoke(ctx, "/main.Book/Update", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.Book/UpdateBook", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *bookClient) Delete(ctx context.Context, in *DeleteBookRequest, opts ...grpc.CallOption) (*DeleteBookResponse, error) {
+func (c *bookClient) DeleteBook(ctx context.Context, in *DeleteBookRequest, opts ...grpc.CallOption) (*DeleteBookResponse, error) {
 	out := new(DeleteBookResponse)
-	err := c.cc.Invoke(ctx, "/main.Book/Delete", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/main.Book/DeleteBook", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -316,11 +316,11 @@ func (c *bookClient) Delete(ctx context.Context, in *DeleteBookRequest, opts ...
 // All implementations must embed UnimplementedBookServer
 // for forward compatibility
 type BookServer interface {
-	GetOne(context.Context, *GetBookRequest) (*GetBookResponse, error)
-	GetAll(context.Context, *GetAllBooksRequest) (*GetAllBooksResponse, error)
-	Create(context.Context, *CreateBookRequest) (*CreateBookResponse, error)
-	Update(context.Context, *UpdateBookRequest) (*UpdateBookResponse, error)
-	Delete(context.Context, *DeleteBookRequest) (*DeleteBookResponse, error)
+	GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error)
+	GetAllBooks(context.Context, *GetAllBooksRequest) (*GetAllBooksResponse, error)
+	CreateBook(context.Context, *CreateBookRequest) (*CreateBookResponse, error)
+	UpdateBook(context.Context, *UpdateBookRequest) (*UpdateBookResponse, error)
+	DeleteBook(context.Context, *DeleteBookRequest) (*DeleteBookResponse, error)
 	mustEmbedUnimplementedBookServer()
 }
 
@@ -328,20 +328,20 @@ type BookServer interface {
 type UnimplementedBookServer struct {
 }
 
-func (UnimplementedBookServer) GetOne(context.Context, *GetBookRequest) (*GetBookResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
+func (UnimplementedBookServer) GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
 }
-func (UnimplementedBookServer) GetAll(context.Context, *GetAllBooksRequest) (*GetAllBooksResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
+func (UnimplementedBookServer) GetAllBooks(context.Context, *GetAllBooksRequest) (*GetAllBooksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllBooks not implemented")
 }
-func (UnimplementedBookServer) Create(context.Context, *CreateBookRequest) (*CreateBookResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (UnimplementedBookServer) CreateBook(context.Context, *CreateBookRequest) (*CreateBookResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBook not implemented")
 }
-func (UnimplementedBookServer) Update(context.Context, *UpdateBookRequest) (*UpdateBookResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+func (UnimplementedBookServer) UpdateBook(context.Context, *UpdateBookRequest) (*UpdateBookResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBook not implemented")
 }
-func (UnimplementedBookServer) Delete(context.Context, *DeleteBookRequest) (*DeleteBookResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+func (UnimplementedBookServer) DeleteBook(context.Context, *DeleteBookRequest) (*DeleteBookResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBook not implemented")
 }
 func (UnimplementedBookServer) mustEmbedUnimplementedBookServer() {}
 
@@ -356,92 +356,92 @@ func RegisterBookServer(s grpc.ServiceRegistrar, srv BookServer) {
 	s.RegisterService(&Book_ServiceDesc, srv)
 }
 
-func _Book_GetOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Book_GetBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetBookRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookServer).GetOne(ctx, in)
+		return srv.(BookServer).GetBook(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.Book/GetOne",
+		FullMethod: "/main.Book/GetBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookServer).GetOne(ctx, req.(*GetBookRequest))
+		return srv.(BookServer).GetBook(ctx, req.(*GetBookRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Book_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Book_GetAllBooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAllBooksRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookServer).GetAll(ctx, in)
+		return srv.(BookServer).GetAllBooks(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.Book/GetAll",
+		FullMethod: "/main.Book/GetAllBooks",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookServer).GetAll(ctx, req.(*GetAllBooksRequest))
+		return srv.(BookServer).GetAllBooks(ctx, req.(*GetAllBooksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Book_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Book_CreateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateBookRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookServer).Create(ctx, in)
+		return srv.(BookServer).CreateBook(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.Book/Create",
+		FullMethod: "/main.Book/CreateBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookServer).Create(ctx, req.(*CreateBookRequest))
+		return srv.(BookServer).CreateBook(ctx, req.(*CreateBookRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Book_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Book_UpdateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateBookRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookServer).Update(ctx, in)
+		return srv.(BookServer).UpdateBook(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.Book/Update",
+		FullMethod: "/main.Book/UpdateBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookServer).Update(ctx, req.(*UpdateBookRequest))
+		return srv.(BookServer).UpdateBook(ctx, req.(*UpdateBookRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Book_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Book_DeleteBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteBookRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookServer).Delete(ctx, in)
+		return srv.(BookServer).DeleteBook(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.Book/Delete",
+		FullMethod: "/main.Book/DeleteBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookServer).Delete(ctx, req.(*DeleteBookRequest))
+		return srv.(BookServer).DeleteBook(ctx, req.(*DeleteBookRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -454,24 +454,24 @@ var Book_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*BookServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetOne",
-			Handler:    _Book_GetOne_Handler,
+			MethodName: "GetBook",
+			Handler:    _Book_GetBook_Handler,
 		},
 		{
-			MethodName: "GetAll",
-			Handler:    _Book_GetAll_Handler,
+			MethodName: "GetAllBooks",
+			Handler:    _Book_GetAllBooks_Handler,
 		},
 		{
-			MethodName: "Create",
-			Handler:    _Book_Create_Handler,
+			MethodName: "CreateBook",
+			Handler:    _Book_CreateBook_Handler,
 		},
 		{
-			MethodName: "Update",
-			Handler:    _Book_Update_Handler,
+			MethodName: "UpdateBook",
+			Handler:    _Book_UpdateBook_Handler,
 		},
 		{
-			MethodName: "Delete",
-			Handler:    _Book_Delete_Handler,
+			MethodName: "DeleteBook",
+			Handler:    _Book_DeleteBook_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -18,15 +18,15 @@ func NewUserHandler(userService *service.UserService) *UserHandler {
 	return &UserHandler{us: userService}
 }
 
-func (uh *UserHandler) GetOne(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
-	return uh.us.GetOne(req.GetId())
+func (uh *UserHandler) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserResponse, error) {
+	return uh.us.GetUser(req.GetId())
 }
 
-func (uh *UserHandler) GetAll(ctx context.Context, req *pb.GetAllAUserRequest) (*pb.GetAllAUserResponse, error) {
-	return uh.us.GetAll()
+func (uh *UserHandler) GetAllUsers(ctx context.Context, req *pb.GetAllUsersRequest) (*pb.GetAllUsersResponse, error) {
+	return uh.us.GetAllUsers(req.GetPage())
 }
 
-func (uh *UserHandler) Create(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+func (uh *UserHandler) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
 	user := model.User{
 		ID:        req.GetUser().GetId(),
 		Nickname:  req.GetUser().GetNickname(),
@@ -36,10 +36,10 @@ func (uh *UserHandler) Create(ctx context.Context, req *pb.CreateUserRequest) (*
 		UpdatedAt: time.Now(),
 	}
 
-	return uh.us.Create(user)
+	return uh.us.CreateUser(user)
 }
 
-func (uh *UserHandler) Update(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+func (uh *UserHandler) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
 	user := model.User{
 		ID:        req.GetUser().GetId(),
 		Nickname:  req.GetUser().GetNickname(),
@@ -49,9 +49,9 @@ func (uh *UserHandler) Update(ctx context.Context, req *pb.UpdateUserRequest) (*
 		UpdatedAt: time.Now(),
 	}
 
-	return uh.us.Update(user)
+	return uh.us.UpdateUser(user)
 }
 
 func (uh *UserHandler) Delete(ctx context.Context, req *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
-	return uh.us.Delete(req.GetId())
+	return uh.us.DeleteUser(req.GetId())
 }

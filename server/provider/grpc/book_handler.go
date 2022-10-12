@@ -18,15 +18,15 @@ func NewBookHandler(bookService *service.BookService) *BookHandler {
 	return &BookHandler{us: bookService}
 }
 
-func (bh *BookHandler) GetOne(ctx context.Context, req *pb.GetBookRequest) (*pb.GetBookResponse, error) {
-	return bh.us.GetOne(req.GetId())
+func (bh *BookHandler) GetBook(ctx context.Context, req *pb.GetBookRequest) (*pb.GetBookResponse, error) {
+	return bh.us.GetBook(req.GetId())
 }
 
-func (bh *BookHandler) GetAll(ctx context.Context, req *pb.GetAllBooksRequest) (*pb.GetAllBooksResponse, error) {
-	return bh.us.GetAll()
+func (bh *BookHandler) GetAllBooks(ctx context.Context, req *pb.GetAllBooksRequest) (*pb.GetAllBooksResponse, error) {
+	return bh.us.GetAllBooks(req.GetPage())
 }
 
-func (bh *BookHandler) Create(ctx context.Context, req *pb.CreateBookRequest) (*pb.CreateBookResponse, error) {
+func (bh *BookHandler) CreateBook(ctx context.Context, req *pb.CreateBookRequest) (*pb.CreateBookResponse, error) {
 	book := model.Book{
 		ID:         req.GetBook().GetId(),
 		Name:       req.GetBook().GetName(),
@@ -35,10 +35,10 @@ func (bh *BookHandler) Create(ctx context.Context, req *pb.CreateBookRequest) (*
 		UpdatedAt:  time.Now(),
 	}
 
-	return bh.us.Create(book)
+	return bh.us.CreateBook(book)
 }
 
-func (bh *BookHandler) Update(ctx context.Context, req *pb.UpdateBookRequest) (*pb.UpdateBookResponse, error) {
+func (bh *BookHandler) UpdateBook(ctx context.Context, req *pb.UpdateBookRequest) (*pb.UpdateBookResponse, error) {
 	book := model.Book{
 		ID:         req.GetBook().GetId(),
 		Name:       req.GetBook().GetName(),
@@ -47,9 +47,9 @@ func (bh *BookHandler) Update(ctx context.Context, req *pb.UpdateBookRequest) (*
 		UpdatedAt:  time.Now(),
 	}
 
-	return bh.us.Update(book)
+	return bh.us.UpdateBook(book)
 }
 
-func (bh *BookHandler) Delete(ctx context.Context, req *pb.DeleteBookRequest) (*pb.DeleteBookResponse, error) {
-	return bh.us.Delete(req.GetId())
+func (bh *BookHandler) DeleteBook(ctx context.Context, req *pb.DeleteBookRequest) (*pb.DeleteBookResponse, error) {
+	return bh.us.DeleteBook(req.GetId())
 }

@@ -3,17 +3,17 @@ package controllers
 import pb "github.com/PavelDonchenko/bookstorejRPC/client/gen/proto"
 
 type UserApiController interface {
-	GetAll() (*pb.GetAllAUserResponse, error)
-	Get(id uint32) (*pb.GetUserResponse, error)
-	Create(u *pb.UserItem) (*pb.CreateUserResponse, error)
-	Update(u *pb.UserItem) (*pb.UpdateUserResponse, error)
-	Delete(id uint32) (*pb.DeleteUserResponse, error)
+	GetAllUsers(page uint32) (*pb.GetAllUsersResponse, error)
+	GetUser(id uint32) (*pb.GetUserResponse, error)
+	CreateUser(u *pb.UserItem) (*pb.CreateUserResponse, error)
+	UpdateUser(u *pb.UserItem) (*pb.UpdateUserResponse, error)
+	DeleteUser(id uint32) (*pb.DeleteUserResponse, error)
 }
 
 type BookApiController interface {
-	GetAll() (*pb.GetAllBooksResponse, error)
-	Get(id uint32) (*pb.GetBookResponse, error)
-	Create(u *pb.BookItem) (*pb.CreateBookResponse, error)
-	Update(u *pb.BookItem) (*pb.UpdateBookResponse, error)
-	Delete(id uint32) (*pb.DeleteBookResponse, error)
+	GetAllBooks(page uint32) (*pb.GetAllBooksResponse, error)
+	GetBook(id uint32) (*pb.GetBookResponse, error)
+	CreateBook(u *pb.BookItem) (*pb.CreateBookResponse, error)
+	UpdateBook(u *pb.BookItem) (*pb.UpdateBookResponse, error)
+	DeleteBook(id uint32) (*pb.DeleteBookResponse, error)
 }

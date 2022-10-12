@@ -16,45 +16,19 @@ func CreateAllRoutes(cu *controllers.BaseUserHandler, cb *controllers3.BaseBookH
 	bh := rest2.NewRouterBookHandler(cb)
 	router := gin.Default()
 
-	router.GET("/users/:id", ch.GetOne)
-	router.GET("/users", ch.GetAll)
-	router.POST("/users", ch.Create)
-	router.PUT("/users/update", ch.Update)
-	router.DELETE("/users/:id", ch.Delete)
+	router.GET("/users/:id", ch.GetUser)
+	router.GET("/users", ch.GetAllUsers)
+	router.POST("/users", ch.CreateUser)
+	router.PUT("/users/:id", ch.UpdateUser)
+	router.DELETE("/users/:id", ch.DeleteUser)
 
-	router.GET("/books/:id", bh.GetOne)
-	router.GET("/books", bh.GetAll)
-	router.POST("/books", bh.Create)
-	router.PUT("/books/update", bh.Update)
-	router.DELETE("/books/:id", bh.Delete)
+	router.GET("/books/:id", bh.GetBook)
+	router.GET("/books", bh.GetAllBooks)
+	router.POST("/books", bh.CreateBook)
+	router.PUT("/books/update", bh.UpdateBook)
+	router.DELETE("/books/:id", bh.DeleteBook)
 
 	router.Run(":8081")
 
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
-
-//func CreateUserRouter(cu *controllers.BaseUserHandler) {
-//	ch := rest.NewRouterHandler(cu)
-//	router := gin.Default()
-//
-//	router.GET("/users/:id", ch.GetOne)
-//	router.GET("/users", ch.GetAll)
-//	router.POST("/users", ch.Create)
-//	router.PUT("/users/update", ch.Update)
-//	router.DELETE("/users/:id", ch.Delete)
-//
-//	router.Run(":8081")
-//
-//	log.Fatal(http.ListenAndServe(":8081", nil))
-//}
-//
-//func CreateBookRouter(cb *controllers3.BaseBookHandler)  {
-//	bh := rest.NewRouterHandler(cb)
-//	router := gin.Default()
-//
-//	router.GET("/book/:id", bh.GetOne)
-//	router.GET("/book", bh.GetAll)
-//	router.POST("/book", bh.Create)
-//	router.PUT("/book/update", bh.Update)
-//	router.DELETE("/book/:id", bh.Delete)
-//}

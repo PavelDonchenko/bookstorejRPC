@@ -5,6 +5,7 @@ import (
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 	repository2 "github.com/PavelDonchenko/bookstorejRPC/server/repository"
 	repository "github.com/PavelDonchenko/bookstorejRPC/server/repository/user"
+	"github.com/PavelDonchenko/bookstorejRPC/server/utils"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -18,8 +19,8 @@ func NewUserService(userRepo *repository.UserRepo) *UserService {
 	}
 }
 
-func (us *UserService) GetOne(id uint32) (*pb.GetUserResponse, error) {
-	user, err := us.userRepo.GetOne(id)
+func (us *UserService) GetUser(id uint32) (*pb.GetUserResponse, error) {
+	user, err := us.userRepo.GetUser(id)
 
 	item := pb.UserItem{
 		Id:       uint32(user.ID),
@@ -31,8 +32,12 @@ func (us *UserService) GetOne(id uint32) (*pb.GetUserResponse, error) {
 	}
 	return &pb.GetUserResponse{User: &item}, err
 }
-func (us *UserService) GetAll() (*pb.GetAllAUserResponse, error) {
-	users, err := us.userRepo.GetAll()
+
+func (us *UserService) GetAllUsers(page uint32) (*pb.GetAllUsersResponse, error) {
+
+	offset, limit := utils.Pagination(page)
+
+	users, err := us.userRepo.GetAllUsers(offset, limit)
 
 	items := []*pb.UserItem{}
 
@@ -48,10 +53,11 @@ func (us *UserService) GetAll() (*pb.GetAllAUserResponse, error) {
 		items = append(items, u)
 	}
 
-	return &pb.GetAllAUserResponse{User: items}, err
+	return &pb.GetAllUsersResponse{User: items}, err
 }
-func (us *UserService) Create(u model.User) (*pb.CreateUserResponse, error) {
-	user, err := us.userRepo.Create(u)
+
+func (us *UserService) CreateUser(u model.User) (*pb.CreateUserResponse, error) {
+	user, err := us.userRepo.CreateUser(u)
 
 	item := pb.UserItem{
 		Id:       uint32(user.ID),
@@ -65,8 +71,9 @@ func (us *UserService) Create(u model.User) (*pb.CreateUserResponse, error) {
 	return &pb.CreateUserResponse{User: &item}, err
 
 }
-func (us *UserService) Update(u model.User) (*pb.UpdateUserResponse, error) {
-	user, err := us.userRepo.Update(u)
+
+func (us *UserService) UpdateUser(u model.User) (*pb.UpdateUserResponse, error) {
+	user, err := us.userRepo.UpdateUser(u)
 
 	item := pb.UserItem{
 		Id:       uint32(user.ID),
@@ -79,8 +86,9 @@ func (us *UserService) Update(u model.User) (*pb.UpdateUserResponse, error) {
 
 	return &pb.UpdateUserResponse{User: &item}, err
 }
-func (us *UserService) Delete(id uint32) (*pb.DeleteUserResponse, error) {
-	result, err := us.userRepo.Delete(id)
+
+func (us *UserService) DeleteUser(id uint32) (*pb.DeleteUserResponse, error) {
+	result, err := us.userRepo.DeleteUser(id)
 
 	return &pb.DeleteUserResponse{Success: result}, err
 }

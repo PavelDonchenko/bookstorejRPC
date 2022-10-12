@@ -13,7 +13,7 @@ import (
 
 type BookRepo struct {
 	db   *gorm.DB
-	book model.Book
+	book *model.Book
 }
 
 func NewBookRepo(db *gorm.DB) *BookRepo {
@@ -39,27 +39,30 @@ func (b *BookRepo) Prepare() {
 	b.book.UpdatedAt = time.Now()
 }
 
-func (u *BookRepo) GetAll() ([]model.Book, error) {
+func (u *BookRepo) GetAllBooks(offset int, limit int) ([]model.Book, error) {
 	books := []model.Book{}
-	err := u.db.Debug().Model(&model.Book{}).Limit(100).Find(&books).Error
+	err := u.db.Debug().Model(&model.Book{}).Limit(limit).Offset(offset).Find(&books).Error
 	if err != nil {
 		return []model.Book{}, err
 	}
 
 	return books, nil
 }
-func (b *BookRepo) GetOne(id uint32) (model.Book, error) {
-	err := b.db.Debug().Model(&model.Book{}).Where("id = ?", id).Take(&b.book).Error
+
+func (b *BookRepo) GetBook(id uint32) (*model.Book, error) {
+	result := &model.Book{}
+	err := b.db.Debug().Model(&model.Book{}).Where("id = ?", id).Take(result).Error
 	if err != nil {
-		return model.Book{}, err
+		return &model.Book{}, err
 	}
 	if gorm.IsRecordNotFoundError(err) {
-		return model.Book{}, errors.New("Book Not Found")
+		return &model.Book{}, errors.New("Book Not Found")
 	}
 
-	return b.book, nil
+	return result, nil
 }
-func (b *BookRepo) Create(book model.Book) (model.Book, error) {
+
+func (b *BookRepo) CreateBook(book model.Book) (model.Book, error) {
 	err := b.db.Debug().Create(&book).Error
 	if err != nil {
 		return model.Book{}, err
@@ -67,7 +70,8 @@ func (b *BookRepo) Create(book model.Book) (model.Book, error) {
 
 	return book, err
 }
-func (b *BookRepo) Update(book model.Book) (model.Book, error) {
+
+func (b *BookRepo) UpdateBook(book model.Book) (model.Book, error) {
 	if err := b.db.First(&book).Error; err != nil {
 		return book, err
 	}
@@ -76,7 +80,8 @@ func (b *BookRepo) Update(book model.Book) (model.Book, error) {
 	fmt.Println(err)
 	return book, err
 }
-func (b *BookRepo) Delete(id uint32) (bool, error) {
+
+func (b *BookRepo) DeleteBook(id uint32) (bool, error) {
 	db := b.db.Debug().Model(&model.Book{}).Where("id = ?", id).Take(&model.Book{}).Delete(&model.Book{})
 	result := true
 	if db.Error != nil {

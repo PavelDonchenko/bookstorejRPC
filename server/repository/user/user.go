@@ -3,7 +3,6 @@ package repository
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"html"
 	"strings"
 	"time"
@@ -97,19 +96,19 @@ func (u *UserRepo) Validate(action string) error {
 	}
 }
 
-func (u *UserRepo) GetAll() ([]model.User, error) {
+func (u *UserRepo) GetAllUsers(offset int, limit int) ([]model.User, error) {
 	users := []model.User{}
-	err := u.db.Model(&model.User{}).Limit(100).Find(&users).Error
+	err := u.db.Model(&model.User{}).Limit(limit).Offset(offset).Find(&users).Error
 	if err != nil {
 		return []model.User{}, err
 	}
 
 	return users, nil
 }
-func (u *UserRepo) GetOne(id uint32) (*model.User, error) {
+
+func (u *UserRepo) GetUser(id uint32) (*model.User, error) {
 	result := &model.User{}
-	fmt.Printf("Type: %T, Value: %v", result, result)
-	err := u.db.Debug().Model(model.User{}).Where("id = ?", id).Take(result).Error
+	err := u.db.Debug().Model(&model.User{}).Where("id = ?", id).Take(result).Error
 	if err != nil {
 		return &model.User{}, err
 	}
@@ -118,7 +117,8 @@ func (u *UserRepo) GetOne(id uint32) (*model.User, error) {
 	}
 	return result, err
 }
-func (u *UserRepo) Create(user model.User) (model.User, error) {
+
+func (u *UserRepo) CreateUser(user model.User) (model.User, error) {
 	err := u.db.Create(&user).Error
 	if err != nil {
 		return model.User{}, err
@@ -126,16 +126,43 @@ func (u *UserRepo) Create(user model.User) (model.User, error) {
 
 	return user, err
 }
-func (u *UserRepo) Update(user model.User) (model.User, error) {
-	if err := u.db.First(&user).Error; err != nil {
-		return user, err
-	}
 
-	err := u.db.Model(&user).Updates(&user).Error
-	fmt.Println(err)
-	return user, err
+func (u *UserRepo) UpdateUser(user model.User) (model.User, error) {
+	//
+	//if err := u.db.First(&user).Error; err != nil {
+	//	return user, err
+	//}
+
+	//result := &model.User{}
+	//err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&user).Error
+	//if err != nil {
+	//	return model.User{}, err
+	//}
+	//
+	//err = u.db.Model(&user).Updates(&user).Error
+	//fmt.Println(err)
+	//return user, err
+
+	err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&model.User{}).UpdateColumns(
+		map[string]interface{}{
+			"password":   u.user.Password,
+			"nickname":   u.user.Nickname,
+			"email":      u.user.Email,
+			"updated_at": time.Now(),
+		},
+	).Error
+	if err != nil {
+		return model.User{}, err
+	}
+	// This is the display the updated user
+	err = u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&u.user).Error
+	if err != nil {
+		return model.User{}, err
+	}
+	return model.User{}, nil
 }
-func (u *UserRepo) Delete(id uint32) (bool, error) {
+
+func (u *UserRepo) DeleteUser(id uint32) (bool, error) {
 	db := u.db.Debug().Model(&model.User{}).Where("id = ?", id).Take(&model.User{}).Delete(&model.User{})
 	result := true
 	if db.Error != nil {

@@ -26,8 +26,20 @@ func NewRouterUserHandler(c *controllers.BaseUserHandler) *routerUserHandler {
 	}
 }
 
-func (h *routerUserHandler) GetAll(ctx *gin.Context) {
-	res, err := h.c.GetAll()
+func (h *routerUserHandler) GetAllUsers(ctx *gin.Context) {
+	var page uint64 = 0
+	var err error
+	p := ctx.Param("page")
+
+	if p != "" {
+		page, err = strconv.ParseUint(p, 10, 32)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	res, err := h.c.GetAllUsers(uint32(page))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -36,7 +48,7 @@ func (h *routerUserHandler) GetAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"response": res})
 }
 
-func (h *routerUserHandler) GetOne(ctx *gin.Context) {
+func (h *routerUserHandler) GetUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 	Id, err := strconv.Atoi(id)
 	if err != nil {
@@ -44,7 +56,7 @@ func (h *routerUserHandler) GetOne(ctx *gin.Context) {
 		return
 	}
 
-	res, err := h.c.Get(uint32(Id))
+	res, err := h.c.GetUser(uint32(Id))
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -53,7 +65,7 @@ func (h *routerUserHandler) GetOne(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"response": res})
 }
 
-func (h *routerUserHandler) Create(ctx *gin.Context) {
+func (h *routerUserHandler) CreateUser(ctx *gin.Context) {
 	var input UserInput
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
@@ -68,7 +80,7 @@ func (h *routerUserHandler) Create(ctx *gin.Context) {
 
 	user := pb.UserItem{Nickname: input.Nickname, Email: input.Email, Password: input.Password}
 
-	res, err := h.c.Create(&user)
+	res, err := h.c.CreateUser(&user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
@@ -77,7 +89,7 @@ func (h *routerUserHandler) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"response": res})
 }
 
-func (h *routerUserHandler) Update(ctx *gin.Context) {
+func (h *routerUserHandler) UpdateUser(ctx *gin.Context) {
 
 	var input UserInput
 
@@ -88,7 +100,7 @@ func (h *routerUserHandler) Update(ctx *gin.Context) {
 
 	user := pb.UserItem{Nickname: input.Nickname, Email: input.Email, Password: input.Password}
 
-	resUpdate, err := h.c.Update(&user)
+	resUpdate, err := h.c.UpdateUser(&user)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -98,14 +110,14 @@ func (h *routerUserHandler) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"response": resUpdate})
 }
 
-func (h *routerUserHandler) Delete(ctx *gin.Context) {
+func (h *routerUserHandler) DeleteUser(ctx *gin.Context) {
 	userId, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	res, err := h.c.Delete(uint32(userId))
+	res, err := h.c.DeleteUser(uint32(userId))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

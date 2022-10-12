@@ -5,6 +5,7 @@ import (
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 	repository2 "github.com/PavelDonchenko/bookstorejRPC/server/repository"
 	repository "github.com/PavelDonchenko/bookstorejRPC/server/repository/book"
+	"github.com/PavelDonchenko/bookstorejRPC/server/utils"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -18,8 +19,8 @@ func NewBookService(bookRepo *repository.BookRepo) *BookService {
 	}
 }
 
-func (us *BookService) GetOne(id uint32) (*pb.GetBookResponse, error) {
-	book, err := us.bookRepo.GetOne(id)
+func (us *BookService) GetBook(id uint32) (*pb.GetBookResponse, error) {
+	book, err := us.bookRepo.GetBook(id)
 
 	item := pb.BookItem{
 		Id:         uint32(book.ID),
@@ -30,8 +31,12 @@ func (us *BookService) GetOne(id uint32) (*pb.GetBookResponse, error) {
 	}
 	return &pb.GetBookResponse{Book: &item}, err
 }
-func (us *BookService) GetAll() (*pb.GetAllBooksResponse, error) {
-	books, err := us.bookRepo.GetAll()
+
+func (us *BookService) GetAllBooks(page uint32) (*pb.GetAllBooksResponse, error) {
+
+	offset, limit := utils.Pagination(page)
+
+	books, err := us.bookRepo.GetAllBooks(offset, limit)
 
 	items := []*pb.BookItem{}
 
@@ -48,8 +53,9 @@ func (us *BookService) GetAll() (*pb.GetAllBooksResponse, error) {
 
 	return &pb.GetAllBooksResponse{Book: items}, err
 }
-func (us *BookService) Create(u model.Book) (*pb.CreateBookResponse, error) {
-	book, err := us.bookRepo.Create(u)
+
+func (us *BookService) CreateBook(u model.Book) (*pb.CreateBookResponse, error) {
+	book, err := us.bookRepo.CreateBook(u)
 
 	item := pb.BookItem{
 		Id:         uint32(book.ID),
@@ -60,10 +66,10 @@ func (us *BookService) Create(u model.Book) (*pb.CreateBookResponse, error) {
 	}
 
 	return &pb.CreateBookResponse{Book: &item}, err
-
 }
-func (us *BookService) Update(u model.Book) (*pb.UpdateBookResponse, error) {
-	book, err := us.bookRepo.Update(u)
+
+func (us *BookService) UpdateBook(u model.Book) (*pb.UpdateBookResponse, error) {
+	book, err := us.bookRepo.UpdateBook(u)
 
 	item := pb.BookItem{
 		Id:         uint32(book.ID),
@@ -75,8 +81,9 @@ func (us *BookService) Update(u model.Book) (*pb.UpdateBookResponse, error) {
 
 	return &pb.UpdateBookResponse{Book: &item}, err
 }
-func (us *BookService) Delete(id uint32) (*pb.DeleteBookResponse, error) {
-	result, err := us.bookRepo.Delete(id)
+
+func (us *BookService) DeleteBook(id uint32) (*pb.DeleteBookResponse, error) {
+	result, err := us.bookRepo.DeleteBook(id)
 
 	return &pb.DeleteBookResponse{Success: result}, err
 }

@@ -14,18 +14,22 @@ func NewBaseUserHandler(client pb.UserClient) *BaseUserHandler {
 	return &BaseUserHandler{grpcClient: client}
 }
 
-func (bh *BaseUserHandler) GetAll() (*pb.GetAllAUserResponse, error) {
-	return bh.grpcClient.GetAll(context.Background(), &pb.GetAllAUserRequest{})
+func (bh *BaseUserHandler) GetAllUsers(page uint32) (*pb.GetAllUsersResponse, error) {
+	return bh.grpcClient.GetAllUsers(context.Background(), &pb.GetAllUsersRequest{Page: page})
 }
-func (bh *BaseUserHandler) Get(id uint32) (*pb.GetUserResponse, error) {
-	return bh.grpcClient.GetOne(context.Background(), &pb.GetUserRequest{Id: id})
+
+func (bh *BaseUserHandler) GetUser(id uint32) (*pb.GetUserResponse, error) {
+	return bh.grpcClient.GetUser(context.Background(), &pb.GetUserRequest{Id: id})
 }
-func (bh *BaseUserHandler) Create(u *pb.UserItem) (*pb.CreateUserResponse, error) {
-	return bh.grpcClient.Create(context.Background(), &pb.CreateUserRequest{User: u})
+
+func (bh *BaseUserHandler) CreateUser(u *pb.UserItem) (*pb.CreateUserResponse, error) {
+	return bh.grpcClient.CreateUser(context.Background(), &pb.CreateUserRequest{User: u})
 }
-func (bh *BaseUserHandler) Update(u *pb.UserItem) (*pb.UpdateUserResponse, error) {
-	return bh.grpcClient.Update(context.Background(), &pb.UpdateUserRequest{User: u})
+
+func (bh *BaseUserHandler) UpdateUser(u *pb.UserItem) (*pb.UpdateUserResponse, error) {
+	return bh.grpcClient.UpdateUser(context.Background(), &pb.UpdateUserRequest{User: u})
 }
-func (bh *BaseUserHandler) Delete(id uint32) (*pb.DeleteUserResponse, error) {
-	return bh.grpcClient.Delete(context.Background(), &pb.DeleteUserRequest{Id: id})
+
+func (bh *BaseUserHandler) DeleteUser(id uint32) (*pb.DeleteUserResponse, error) {
+	return bh.grpcClient.DeleteUser(context.Background(), &pb.DeleteUserRequest{Id: id})
 }
