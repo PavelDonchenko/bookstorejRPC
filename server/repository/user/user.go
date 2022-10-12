@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"html"
@@ -9,13 +10,14 @@ import (
 
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 	"github.com/badoux/checkmail"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type UserRepo struct {
 	db   *gorm.DB
-	user model.User
+	user *model.User
 }
 
 func NewUserRepo(db *gorm.DB) *UserRepo {
@@ -29,6 +31,8 @@ func Hash(password string) ([]byte, error) {
 func VerifyPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
+
+var db *sql.DB
 
 func (u *UserRepo) BeforeSave() error {
 	hashedPassword, err := Hash(u.user.Password)
@@ -102,16 +106,17 @@ func (u *UserRepo) GetAll() ([]model.User, error) {
 
 	return users, nil
 }
-func (u *UserRepo) GetOne(id uint32) (model.User, error) {
-	err := u.db.Model(&model.User{}).Where("id = ?", id).Take(&u.user).Error
+func (u *UserRepo) GetOne(id uint32) (*model.User, error) {
+	result := &model.User{}
+	fmt.Printf("Type: %T, Value: %v", result, result)
+	err := u.db.Debug().Model(model.User{}).Where("id = ?", id).Take(result).Error
 	if err != nil {
-		return model.User{}, err
+		return &model.User{}, err
 	}
 	if gorm.IsRecordNotFoundError(err) {
-		return model.User{}, errors.New("User Not Found")
+		return &model.User{}, errors.New("User Not Found")
 	}
-
-	return u.user, nil
+	return result, err
 }
 func (u *UserRepo) Create(user model.User) (model.User, error) {
 	err := u.db.Create(&user).Error

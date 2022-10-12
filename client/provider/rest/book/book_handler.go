@@ -4,29 +4,28 @@ import (
 	"net/http"
 	"strconv"
 
-	controllers "github.com/PavelDonchenko/bookstorejRPC/client/controllers/user"
+	controllers "github.com/PavelDonchenko/bookstorejRPC/client/controllers/book"
 	pb "github.com/PavelDonchenko/bookstorejRPC/client/gen/proto"
 	"github.com/gin-gonic/gin"
 )
 
-type UserInput struct {
-	Id       uint32 `json:"id"`
-	Nickname string `json:"nickname"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+type BookInput struct {
+	Id         uint32 `json:"id"`
+	Name       string `json:"name"`
+	BookAuthor string `json:"bookAuthor"`
 }
 
-type routerUserHandler struct {
-	c *controllers.BaseUserHandler
+type routerBookHandler struct {
+	c *controllers.BaseBookHandler
 }
 
-func NewRouterUserHandler(c *controllers.BaseUserHandler) *routerUserHandler {
-	return &routerUserHandler{
+func NewRouterBookHandler(c *controllers.BaseBookHandler) *routerBookHandler {
+	return &routerBookHandler{
 		c: c,
 	}
 }
 
-func (h *routerUserHandler) GetAll(ctx *gin.Context) {
+func (h *routerBookHandler) GetAll(ctx *gin.Context) {
 	res, err := h.c.GetAll()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -36,15 +35,14 @@ func (h *routerUserHandler) GetAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"response": res})
 }
 
-func (h *routerUserHandler) GetOne(ctx *gin.Context) {
-	id := ctx.Param("id")
-	Id, err := strconv.Atoi(id)
+func (h *routerBookHandler) GetOne(ctx *gin.Context) {
+	bookId, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	res, err := h.c.Get(uint32(Id))
+	res, err := h.c.Get(uint32(bookId))
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -53,22 +51,22 @@ func (h *routerUserHandler) GetOne(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"response": res})
 }
 
-func (h *routerUserHandler) Create(ctx *gin.Context) {
-	var input UserInput
+func (h *routerBookHandler) Create(ctx *gin.Context) {
+	var input BookInput
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if input.Nickname == "" {
+	if input.Name == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Title is required"})
 		return
 	}
 
-	user := pb.UserItem{Nickname: input.Nickname, Email: input.Email, Password: input.Password}
+	book := pb.BookItem{Name: input.Name, BookAuthor: input.BookAuthor}
 
-	res, err := h.c.Create(&user)
+	res, err := h.c.Create(&book)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
@@ -77,18 +75,18 @@ func (h *routerUserHandler) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"response": res})
 }
 
-func (h *routerUserHandler) Update(ctx *gin.Context) {
+func (h *routerBookHandler) Update(ctx *gin.Context) {
 
-	var input UserInput
+	var input BookInput
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user := pb.UserItem{Nickname: input.Nickname, Email: input.Email, Password: input.Password}
+	book := pb.BookItem{Name: input.Name, BookAuthor: input.BookAuthor}
 
-	resUpdate, err := h.c.Update(&user)
+	resUpdate, err := h.c.Update(&book)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -98,14 +96,14 @@ func (h *routerUserHandler) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"response": resUpdate})
 }
 
-func (h *routerUserHandler) Delete(ctx *gin.Context) {
-	userId, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+func (h *routerBookHandler) Delete(ctx *gin.Context) {
+	bookId, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	res, err := h.c.Delete(uint32(userId))
+	res, err := h.c.Delete(uint32(bookId))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

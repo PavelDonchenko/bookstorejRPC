@@ -3,12 +3,13 @@ package service
 import (
 	pb "github.com/PavelDonchenko/bookstorejRPC/server/gen/proto"
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
+	repository2 "github.com/PavelDonchenko/bookstorejRPC/server/repository"
 	repository "github.com/PavelDonchenko/bookstorejRPC/server/repository/user"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type UserService struct {
-	userRepo repository.UserRepository
+	userRepo repository2.UserRepository
 }
 
 func NewUserService(userRepo *repository.UserRepo) *UserService {
@@ -25,8 +26,8 @@ func (us *UserService) GetOne(id uint32) (*pb.GetUserResponse, error) {
 		Nickname: user.Nickname,
 		Email:    user.Email,
 		Password: user.Password,
-		CrateAt:  timestamppb.Now(),
-		UpdateAt: timestamppb.Now(),
+		CrateAt:  timestamppb.New(user.CreatedAt),
+		UpdateAt: timestamppb.New(user.UpdatedAt),
 	}
 	return &pb.GetUserResponse{User: &item}, err
 }
@@ -41,8 +42,8 @@ func (us *UserService) GetAll() (*pb.GetAllAUserResponse, error) {
 			Nickname: v.Nickname,
 			Email:    v.Email,
 			Password: v.Password,
-			CrateAt:  timestamppb.Now(),
-			UpdateAt: timestamppb.Now(),
+			CrateAt:  timestamppb.New(v.CreatedAt),
+			UpdateAt: timestamppb.New(v.UpdatedAt),
 		}
 		items = append(items, u)
 	}
@@ -57,8 +58,8 @@ func (us *UserService) Create(u model.User) (*pb.CreateUserResponse, error) {
 		Nickname: user.Nickname,
 		Email:    user.Email,
 		Password: user.Password,
-		CrateAt:  timestamppb.Now(),
-		UpdateAt: timestamppb.Now(),
+		CrateAt:  timestamppb.New(user.CreatedAt),
+		UpdateAt: timestamppb.New(user.UpdatedAt),
 	}
 
 	return &pb.CreateUserResponse{User: &item}, err
@@ -72,8 +73,8 @@ func (us *UserService) Update(u model.User) (*pb.UpdateUserResponse, error) {
 		Nickname: user.Nickname,
 		Email:    user.Email,
 		Password: user.Password,
-		CrateAt:  timestamppb.Now(),
-		UpdateAt: timestamppb.Now(),
+		CrateAt:  timestamppb.New(user.CreatedAt),
+		UpdateAt: timestamppb.New(user.UpdatedAt),
 	}
 
 	return &pb.UpdateUserResponse{User: &item}, err

@@ -7,8 +7,11 @@ import (
 	"os"
 
 	pb "github.com/PavelDonchenko/bookstorejRPC/server/gen/proto"
+	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 	grpcHandler "github.com/PavelDonchenko/bookstorejRPC/server/provider/grpc"
+	repository2 "github.com/PavelDonchenko/bookstorejRPC/server/repository/book"
 	repository "github.com/PavelDonchenko/bookstorejRPC/server/repository/user"
+	service2 "github.com/PavelDonchenko/bookstorejRPC/server/service/book"
 	service "github.com/PavelDonchenko/bookstorejRPC/server/service/user"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -32,9 +35,8 @@ func InitializeDB(Dbdriver, user, password, host, dbname string) *gorm.DB {
 			fmt.Printf("We are connected to the %s database\n", Dbdriver)
 		}
 	}
-
+	DB.Debug().AutoMigrate(&model.User{}, &model.Book{})
 	return DB
-	//RegisterBookStoreRoutes()
 }
 
 func RunServer() {
@@ -49,13 +51,18 @@ func RunServer() {
 
 	defer sqlDB.Close()
 
-	userRepo := repository.NewUserRepo(db)
-
 	s := grpc.NewServer()
+
+	userRepo := repository.NewUserRepo(db)
 	us := service.NewUserService(userRepo)
 	uh := grpcHandler.NewUserHandler(us)
 
+	bookRepo := repository2.NewBookRepo(db)
+	bs := service2.NewBookService(bookRepo)
+	bh := grpcHandler.NewBookHandler(bs)
+
 	pb.RegisterUserServer(s, uh)
+	pb.RegisterBookServer(s, bh)
 
 	fmt.Println("Server successfully started on port :8800")
 	listener, err := net.Listen("tcp", ":8800")

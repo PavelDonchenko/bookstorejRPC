@@ -7,7 +7,17 @@ create_proto:
 	protoc --proto_path=proto proto/*.proto --go-grpc_out=gen/
 
 clean_proto:
+	cd server; \
 	rm gen/proto/*.go
+
+runC:
+	cd client; \
+	go run main.go
+
+runS:
+	cd server; \
+	go run main.go
+
 build: ## Build the release and develoment container. The development
 	docker-compose build
 
