@@ -127,39 +127,53 @@ func (u *UserRepo) CreateUser(user model.User) (model.User, error) {
 	return user, err
 }
 
-func (u *UserRepo) UpdateUser(user model.User) (model.User, error) {
-	//
+func (u *UserRepo) UpdateUser(user model.User) (*model.User, error) {
+	usertake := &model.User{}
+	u.db.First(usertake)
+
+	usertake.Nickname = user.Nickname
+	usertake.Email = user.Email
+	usertake.Password = user.Password
+	u.db.Save(&user)
+	return &user, nil
 	//if err := u.db.First(&user).Error; err != nil {
 	//	return user, err
 	//}
 
 	//result := &model.User{}
-	//err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&user).Error
+	//err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&result).Error
 	//if err != nil {
-	//	return model.User{}, err
+	//	return &model.User{}, err
 	//}
-	//
-	//err = u.db.Model(&user).Updates(&user).Error
-	//fmt.Println(err)
-	//return user, err
+	//fmt.Println("take complete")
+	//fmt.Println("update start ")
 
-	err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&model.User{}).UpdateColumns(
-		map[string]interface{}{
-			"password":   u.user.Password,
-			"nickname":   u.user.Nickname,
-			"email":      u.user.Email,
-			"updated_at": time.Now(),
-		},
-	).Error
-	if err != nil {
-		return model.User{}, err
-	}
-	// This is the display the updated user
-	err = u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&u.user).Error
-	if err != nil {
-		return model.User{}, err
-	}
-	return model.User{}, nil
+	//err := u.db.Model(&model.User{}).Updates(&user).Error
+	//fmt.Println(err)
+	//fmt.Println("update finished ")
+	//return &user, err
+
+	//fmt.Println("update start")
+	//
+	//result := &model.User{}
+	//err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&model.User{}).UpdateColumns(
+	//	map[string]interface{}{
+	//		"password":   u.user.Password,
+	//		"nickname":   u.user.Nickname,
+	//		"email":      u.user.Email,
+	//		"updated_at": time.Now(),
+	//	},
+	//).Error
+	//if err != nil {
+	//	return &model.User{}, err
+	//}
+	//fmt.Println("update complete")
+	//// This is the display the updated user
+	//err = u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(result).Error
+	//if err != nil {
+	//	return &model.User{}, err
+	//}
+	//return result, nil
 }
 
 func (u *UserRepo) DeleteUser(id uint32) (bool, error) {

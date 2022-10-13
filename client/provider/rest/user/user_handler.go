@@ -90,15 +90,25 @@ func (h *routerUserHandler) CreateUser(ctx *gin.Context) {
 }
 
 func (h *routerUserHandler) UpdateUser(ctx *gin.Context) {
-
-	var input UserInput
-
-	if err := ctx.ShouldBindJSON(&input); err != nil {
+	userId, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	res, err := h.c.GetUser(uint32(userId))
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
 
-	user := pb.UserItem{Nickname: input.Nickname, Email: input.Email, Password: input.Password}
+	//var input UserInput
+	//
+	//if err := ctx.ShouldBindJSON(&input); err != nil {
+	//	ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	//	return
+	//}
+
+	user := pb.UserItem{Nickname: res.User.Nickname, Email: res.User.Email, Password: res.User.Password}
 
 	resUpdate, err := h.c.UpdateUser(&user)
 

@@ -8,7 +8,7 @@ type UserRepository interface {
 	GetAllUsers(offset int, limit int) ([]model.User, error)
 	GetUser(id uint32) (*model.User, error)
 	CreateUser(u model.User) (model.User, error)
-	UpdateUser(u model.User) (model.User, error)
+	UpdateUser(u model.User) (*model.User, error)
 	DeleteUser(id uint32) (bool, error)
 }
 
