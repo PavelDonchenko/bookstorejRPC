@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"html"
 	"strings"
 	"time"
@@ -128,14 +129,32 @@ func (u *UserRepo) CreateUser(user model.User) (model.User, error) {
 }
 
 func (u *UserRepo) UpdateUser(user model.User) (*model.User, error) {
-	usertake := &model.User{}
-	u.db.First(usertake)
+	//fmt.Println(user)
+	//err := u.db.Model(&user).Where("email = ?", user.Email).Updates(&user).Error
+	//fmt.Println(err)
+	//return &user, err
 
-	usertake.Nickname = user.Nickname
-	usertake.Email = user.Email
-	usertake.Password = user.Password
-	u.db.Save(&user)
-	return &user, nil
+	usertake := &model.User{}
+
+	err := u.db.Debug().Model(&model.User{}).Where("email = ?", user.Email).Take(usertake).UpdateColumns(map[string]interface{}{
+		"password":   user.Password,
+		"nickname":   user.Nickname,
+		"email":      user.Email,
+		"updated_at": time.Now(),
+	}).Error
+	if err != nil {
+		fmt.Println("erro: %v", err)
+		return &model.User{}, err
+	}
+	return usertake, nil
+
+	//u.db.First(user)
+	//
+	//usertake.Nickname = user.Nickname
+	//usertake.Email = user.Email
+	//usertake.Password = user.Password
+	//u.db.Save(&usertake)
+	//return usertake, nil
 	//if err := u.db.First(&user).Error; err != nil {
 	//	return user, err
 	//}
@@ -155,8 +174,8 @@ func (u *UserRepo) UpdateUser(user model.User) (*model.User, error) {
 
 	//fmt.Println("update start")
 	//
-	//result := &model.User{}
-	//err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&model.User{}).UpdateColumns(
+
+	//err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&user).UpdateColumns(
 	//	map[string]interface{}{
 	//		"password":   u.user.Password,
 	//		"nickname":   u.user.Nickname,
@@ -167,13 +186,12 @@ func (u *UserRepo) UpdateUser(user model.User) (*model.User, error) {
 	//if err != nil {
 	//	return &model.User{}, err
 	//}
-	//fmt.Println("update complete")
 	//// This is the display the updated user
-	//err = u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(result).Error
+	//err = u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&user).Error
 	//if err != nil {
 	//	return &model.User{}, err
 	//}
-	//return result, nil
+	//return &user, nil
 }
 
 func (u *UserRepo) DeleteUser(id uint32) (bool, error) {
