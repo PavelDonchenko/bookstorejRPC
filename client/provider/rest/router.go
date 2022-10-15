@@ -16,14 +16,14 @@ func CreateAllRoutes(cu *controllers.BaseUserHandler, cb *controllers3.BaseBookH
 	bh := rest2.NewRouterBookHandler(cb)
 	router := gin.Default()
 
-	router.GET("/users/:id", ch.GetUser)
-	router.GET("/users", ch.GetAllUsers)
+	router.GET("/user/:id", ch.GetUser)
+	router.GET("/users/:page", ch.GetAllUsers)
 	router.POST("/users", ch.CreateUser)
 	router.PUT("/users/:id", ch.UpdateUser)
 	router.DELETE("/users/:id", ch.DeleteUser)
 
-	router.GET("/books/:id", bh.GetBook)
-	router.GET("/books", bh.GetAllBooks)
+	router.GET("/book/:id", bh.GetBook)
+	router.GET("/books/:page", bh.GetAllBooks)
 	router.POST("/books", bh.CreateBook)
 	router.PUT("/books/update", bh.UpdateBook)
 	router.DELETE("/books/:id", bh.DeleteBook)

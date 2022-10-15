@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -90,7 +91,7 @@ func (h *routerUserHandler) CreateUser(ctx *gin.Context) {
 }
 
 func (h *routerUserHandler) UpdateUser(ctx *gin.Context) {
-	_, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	uid, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -102,8 +103,8 @@ func (h *routerUserHandler) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	book := pb.UserItem{Id: uint32(input.Id), Nickname: input.Nickname, Email: input.Email, Password: input.Password}
-
+	book := pb.UserItem{Id: uint32(uid), Nickname: input.Nickname, Email: input.Email, Password: input.Password}
+	fmt.Print(book)
 	res, err := h.c.UpdateUser(&book)
 
 	if err != nil {

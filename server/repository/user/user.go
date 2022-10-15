@@ -129,14 +129,9 @@ func (u *UserRepo) CreateUser(user model.User) (model.User, error) {
 }
 
 func (u *UserRepo) UpdateUser(user model.User) (*model.User, error) {
-	//fmt.Println(user)
-	//err := u.db.Model(&user).Where("email = ?", user.Email).Updates(&user).Error
-	//fmt.Println(err)
-	//return &user, err
-
 	usertake := &model.User{}
 
-	err := u.db.Debug().Model(&model.User{}).Where("email = ?", user.Email).Take(usertake).UpdateColumns(map[string]interface{}{
+	err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(usertake).UpdateColumns(map[string]interface{}{
 		"password":   user.Password,
 		"nickname":   user.Nickname,
 		"email":      user.Email,
@@ -147,51 +142,6 @@ func (u *UserRepo) UpdateUser(user model.User) (*model.User, error) {
 		return &model.User{}, err
 	}
 	return usertake, nil
-
-	//u.db.First(user)
-	//
-	//usertake.Nickname = user.Nickname
-	//usertake.Email = user.Email
-	//usertake.Password = user.Password
-	//u.db.Save(&usertake)
-	//return usertake, nil
-	//if err := u.db.First(&user).Error; err != nil {
-	//	return user, err
-	//}
-
-	//result := &model.User{}
-	//err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&result).Error
-	//if err != nil {
-	//	return &model.User{}, err
-	//}
-	//fmt.Println("take complete")
-	//fmt.Println("update start ")
-
-	//err := u.db.Model(&model.User{}).Updates(&user).Error
-	//fmt.Println(err)
-	//fmt.Println("update finished ")
-	//return &user, err
-
-	//fmt.Println("update start")
-	//
-
-	//err := u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&user).UpdateColumns(
-	//	map[string]interface{}{
-	//		"password":   u.user.Password,
-	//		"nickname":   u.user.Nickname,
-	//		"email":      u.user.Email,
-	//		"updated_at": time.Now(),
-	//	},
-	//).Error
-	//if err != nil {
-	//	return &model.User{}, err
-	//}
-	//// This is the display the updated user
-	//err = u.db.Debug().Model(&model.User{}).Where("id = ?", user.ID).Take(&user).Error
-	//if err != nil {
-	//	return &model.User{}, err
-	//}
-	//return &user, nil
 }
 
 func (u *UserRepo) DeleteUser(id uint32) (bool, error) {

@@ -21,7 +21,6 @@ func NewBookRepo(db *gorm.DB) *BookRepo {
 }
 
 func (b *BookRepo) Validate() error {
-
 	if b.book.Name == "" {
 		return errors.New("Required Name")
 	}
@@ -71,14 +70,19 @@ func (b *BookRepo) CreateBook(book model.Book) (model.Book, error) {
 	return book, err
 }
 
-func (b *BookRepo) UpdateBook(book model.Book) (model.Book, error) {
-	if err := b.db.First(&book).Error; err != nil {
-		return book, err
-	}
+func (b *BookRepo) UpdateBook(book model.Book) (*model.Book, error) {
+	booktake := &model.Book{}
 
-	err := b.db.Debug().Model(&book).Updates(&book).Error
-	fmt.Println(err)
-	return book, err
+	err := b.db.Debug().Model(&model.User{}).Where("id = ?", book.ID).Take(booktake).UpdateColumns(map[string]interface{}{
+		"name":        book.Name,
+		"book_author": book.BookAuthor,
+		"updated_at":  time.Now(),
+	}).Error
+	if err != nil {
+		fmt.Println("erro: %v", err)
+		return &model.Book{}, err
+	}
+	return booktake, nil
 }
 
 func (b *BookRepo) DeleteBook(id uint32) (bool, error) {

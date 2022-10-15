@@ -2,7 +2,7 @@ package utils
 
 func Pagination(page uint32) (int, int) {
 	var offset int
-	const limit int = 20
+	const limit int = 3
 
 	if page == 0 || page == 1 {
 		offset = 0

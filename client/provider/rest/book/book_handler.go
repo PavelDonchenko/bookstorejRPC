@@ -26,14 +26,19 @@ func NewRouterBookHandler(c *controllers.BaseBookHandler) *routerBookHandler {
 }
 
 func (h *routerBookHandler) GetAllBooks(ctx *gin.Context) {
-	id := ctx.Param("id")
-	Id, err := strconv.Atoi(id)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	var page uint64 = 0
+	var err error
+	p := ctx.Param("page")
+
+	if p != "" {
+		page, err = strconv.ParseUint(p, 10, 32)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
-	res, err := h.c.GetBook(uint32(Id))
+	res, err := h.c.GetAllBooks(uint32(page))
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -83,7 +88,11 @@ func (h *routerBookHandler) CreateBook(ctx *gin.Context) {
 }
 
 func (h *routerBookHandler) UpdateBook(ctx *gin.Context) {
-
+	bid, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	var input BookInput
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {
@@ -91,7 +100,7 @@ func (h *routerBookHandler) UpdateBook(ctx *gin.Context) {
 		return
 	}
 
-	book := pb.BookItem{Name: input.Name, BookAuthor: input.BookAuthor}
+	book := pb.BookItem{Id: uint32(bid), Name: input.Name, BookAuthor: input.BookAuthor}
 
 	resUpdate, err := h.c.UpdateBook(&book)
 

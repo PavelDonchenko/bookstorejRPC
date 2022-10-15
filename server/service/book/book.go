@@ -33,7 +33,6 @@ func (us *BookService) GetBook(id uint32) (*pb.GetBookResponse, error) {
 }
 
 func (us *BookService) GetAllBooks(page uint32) (*pb.GetAllBooksResponse, error) {
-
 	offset, limit := utils.Pagination(page)
 
 	books, err := us.bookRepo.GetAllBooks(offset, limit)

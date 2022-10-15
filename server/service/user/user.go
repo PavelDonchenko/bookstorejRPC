@@ -34,7 +34,6 @@ func (us *UserService) GetUser(id uint32) (*pb.GetUserResponse, error) {
 }
 
 func (us *UserService) GetAllUsers(page uint32) (*pb.GetAllUsersResponse, error) {
-
 	offset, limit := utils.Pagination(page)
 
 	users, err := us.userRepo.GetAllUsers(offset, limit)
@@ -69,7 +68,6 @@ func (us *UserService) CreateUser(u model.User) (*pb.CreateUserResponse, error) 
 	}
 
 	return &pb.CreateUserResponse{User: &item}, err
-
 }
 
 func (us *UserService) UpdateUser(u model.User) (*pb.UpdateUserResponse, error) {

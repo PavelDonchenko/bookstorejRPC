@@ -17,20 +17,20 @@ services:
     networks:
       - fullstack
 
-#  client-jrpc:
-#    container_name: bookstore_client
-#    build:
-#      context: ./client
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8081:8081"
-#    restart: on-failure
-#    volumes:
-#      - api:/usr/src/app/
-#    depends_on:
-#      - server-jrpc
-#    networks:
-#      - fullstack
+  client-jrpc:
+    container_name: bookstore_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    volumes:
+      - api:/usr/src/app/
+    depends_on:
+      - server-jrpc
+    networks:
+      - fullstack
 
 
   bookstoregrpc-mysql:
