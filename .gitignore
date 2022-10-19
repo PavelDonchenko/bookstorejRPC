@@ -1,2 +1,3 @@
 /.idea
-/cmd/main/main.exe
+/server/cmd/main/main.exe
+server/.env

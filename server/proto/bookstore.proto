@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package main;
+
+option go_package = "./proto";
+
+import "google/protobuf/timestamp.proto";
+
+message UserItem {
+  uint32 Id = 1;
+  string Nickname = 2;
+  string Email = 3;
+  string Password = 4;
+  google.protobuf.Timestamp CrateAt = 5;
+  google.protobuf.Timestamp UpdateAt = 6;
+}
+
+message BookItem {
+  uint32 Id = 1;
+  string Name = 2;
+  string BookAuthor = 3;
+  google.protobuf.Timestamp CrateAt = 4;
+  google.protobuf.Timestamp UpdateAt = 5;
+}
+
+service User {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+service Book {
+  rpc GetBook(GetBookRequest) returns (GetBookResponse);
+  rpc GetAllBooks(GetAllBooksRequest) returns (GetAllBooksResponse);
+  rpc CreateBook(CreateBookRequest) returns (CreateBookResponse);
+  rpc UpdateBook(UpdateBookRequest) returns (UpdateBookResponse);
+  rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
+}
+
+message GetUserRequest {
+    uint32 Id = 1;
+}
+
+message GetUserResponse {
+    UserItem user = 1;
+}
+
+message GetAllUsersRequest {
+  uint32 page = 1;
+}
+
+message GetAllUsersResponse {
+  repeated UserItem user = 1;
+}
+
+message CreateUserRequest {
+  UserItem user = 1;
+}
+
+message CreateUserResponse {
+  UserItem user = 1;
+}
+
+message UpdateUserRequest {
+  UserItem user = 1;
+}
+
+message UpdateUserResponse {
+  UserItem user = 1;
+}
+
+message DeleteUserRequest {
+  uint32 Id = 1;
+}
+
+message DeleteUserResponse {
+  bool success = 1;
+}
+
+message GetBookRequest {
+  uint32 Id = 1;
+}
+
+message GetBookResponse {
+  BookItem book = 1;
+}
+
+message GetAllBooksRequest {
+  uint32 page = 1;
+}
+
+message GetAllBooksResponse {
+  repeated BookItem book = 1;
+}
+
+message CreateBookRequest {
+  BookItem book = 1;
+}
+
+message CreateBookResponse {
+  BookItem book = 1;
+}
+
+message UpdateBookRequest {
+  BookItem book = 1;
+}
+
+message UpdateBookResponse {
+  BookItem book = 1;
+}
+
+message DeleteBookRequest {
+  uint32 Id = 1;
+}
+
+message DeleteBookResponse {
+  bool success = 1;
+}
