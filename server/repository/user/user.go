@@ -18,6 +18,7 @@ import (
 type UserRepo struct {
 	db   *gorm.DB
 	user *model.User
+	//bookRepo *repository.BookRepository
 }
 
 func NewUserRepo(db *gorm.DB) *UserRepo {

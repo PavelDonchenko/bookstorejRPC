@@ -477,3 +477,161 @@ var Book_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "bookstore.proto",
 }
+
+// BookHistoryClient is the client API for BookHistory service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type BookHistoryClient interface {
+	Insert(ctx context.Context, in *InsertHistoryRequest, opts ...grpc.CallOption) (*InsertHistoryResponse, error)
+	GetOne(ctx context.Context, in *GetOneHistoryRequest, opts ...grpc.CallOption) (*GetOneHistoryResponse, error)
+	Delete(ctx context.Context, in *DeleteHistoryRequest, opts ...grpc.CallOption) (*DeleteHistoryResponse, error)
+}
+
+type bookHistoryClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewBookHistoryClient(cc grpc.ClientConnInterface) BookHistoryClient {
+	return &bookHistoryClient{cc}
+}
+
+func (c *bookHistoryClient) Insert(ctx context.Context, in *InsertHistoryRequest, opts ...grpc.CallOption) (*InsertHistoryResponse, error) {
+	out := new(InsertHistoryResponse)
+	err := c.cc.Invoke(ctx, "/main.BookHistory/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookHistoryClient) GetOne(ctx context.Context, in *GetOneHistoryRequest, opts ...grpc.CallOption) (*GetOneHistoryResponse, error) {
+	out := new(GetOneHistoryResponse)
+	err := c.cc.Invoke(ctx, "/main.BookHistory/GetOne", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookHistoryClient) Delete(ctx context.Context, in *DeleteHistoryRequest, opts ...grpc.CallOption) (*DeleteHistoryResponse, error) {
+	out := new(DeleteHistoryResponse)
+	err := c.cc.Invoke(ctx, "/main.BookHistory/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// BookHistoryServer is the server API for BookHistory service.
+// All implementations must embed UnimplementedBookHistoryServer
+// for forward compatibility
+type BookHistoryServer interface {
+	Insert(context.Context, *InsertHistoryRequest) (*InsertHistoryResponse, error)
+	GetOne(context.Context, *GetOneHistoryRequest) (*GetOneHistoryResponse, error)
+	Delete(context.Context, *DeleteHistoryRequest) (*DeleteHistoryResponse, error)
+	mustEmbedUnimplementedBookHistoryServer()
+}
+
+// UnimplementedBookHistoryServer must be embedded to have forward compatible implementations.
+type UnimplementedBookHistoryServer struct {
+}
+
+func (UnimplementedBookHistoryServer) Insert(context.Context, *InsertHistoryRequest) (*InsertHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedBookHistoryServer) GetOne(context.Context, *GetOneHistoryRequest) (*GetOneHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOne not implemented")
+}
+func (UnimplementedBookHistoryServer) Delete(context.Context, *DeleteHistoryRequest) (*DeleteHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedBookHistoryServer) mustEmbedUnimplementedBookHistoryServer() {}
+
+// UnsafeBookHistoryServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BookHistoryServer will
+// result in compilation errors.
+type UnsafeBookHistoryServer interface {
+	mustEmbedUnimplementedBookHistoryServer()
+}
+
+func RegisterBookHistoryServer(s grpc.ServiceRegistrar, srv BookHistoryServer) {
+	s.RegisterService(&BookHistory_ServiceDesc, srv)
+}
+
+func _BookHistory_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookHistoryServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/main.BookHistory/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookHistoryServer).Insert(ctx, req.(*InsertHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BookHistory_GetOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOneHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookHistoryServer).GetOne(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/main.BookHistory/GetOne",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookHistoryServer).GetOne(ctx, req.(*GetOneHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BookHistory_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookHistoryServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/main.BookHistory/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookHistoryServer).Delete(ctx, req.(*DeleteHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// BookHistory_ServiceDesc is the grpc.ServiceDesc for BookHistory service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var BookHistory_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "main.BookHistory",
+	HandlerType: (*BookHistoryServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Insert",
+			Handler:    _BookHistory_Insert_Handler,
+		},
+		{
+			MethodName: "GetOne",
+			Handler:    _BookHistory_GetOne_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _BookHistory_Delete_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "bookstore.proto",
+}

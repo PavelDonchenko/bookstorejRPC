@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 
 	pb "github.com/PavelDonchenko/bookstorejRPC/client/gen/proto"
 )
@@ -28,7 +27,6 @@ func (bh *BaseUserHandler) CreateUser(u *pb.UserItem) (*pb.CreateUserResponse, e
 }
 
 func (bh *BaseUserHandler) UpdateUser(u *pb.UserItem) (*pb.UpdateUserResponse, error) {
-	fmt.Println(u)
 	return bh.grpcClient.UpdateUser(context.Background(), &pb.UpdateUserRequest{User: u})
 }
 

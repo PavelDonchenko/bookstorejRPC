@@ -6,6 +6,15 @@ option go_package = "./proto";
 
 import "google/protobuf/timestamp.proto";
 
+message BookHistoryItem {
+  uint64 Id =1;
+  string BookAuthor = 2;
+  string BookName = 3;
+  string LastUser = 4;
+  google.protobuf.Timestamp BookTaken = 5;
+  google.protobuf.Timestamp BookReturn = 6;
+}
+
 message UserItem {
   uint32 Id = 1;
   string Nickname = 2;
@@ -37,6 +46,12 @@ service Book {
   rpc CreateBook(CreateBookRequest) returns (CreateBookResponse);
   rpc UpdateBook(UpdateBookRequest) returns (UpdateBookResponse);
   rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
+}
+
+service BookHistory {
+  rpc Insert(InsertHistoryRequest) returns (InsertHistoryResponse);
+  rpc GetOne(GetOneHistoryRequest) returns (GetOneHistoryResponse);
+  rpc Delete(DeleteHistoryRequest) returns (DeleteHistoryResponse);
 }
 
 message GetUserRequest {
@@ -116,5 +131,29 @@ message DeleteBookRequest {
 }
 
 message DeleteBookResponse {
+  bool success = 1;
+}
+
+message InsertHistoryRequest{
+  BookHistoryItem bookHistory = 1;
+}
+
+message InsertHistoryResponse{
+  bool success = 1;
+}
+
+message GetOneHistoryRequest{
+  uint64 Id = 1;
+}
+
+message GetOneHistoryResponse{
+  BookHistoryItem bookHistory = 1;
+}
+
+message DeleteHistoryRequest{
+  uint64 Id = 1;
+}
+
+message DeleteHistoryResponse{
   bool success = 1;
 }

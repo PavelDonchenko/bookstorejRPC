@@ -4,6 +4,8 @@ go 1.19
 
 require (
 	github.com/badoux/checkmail v1.2.1
+	github.com/elastic/go-elasticsearch/v7 v7.17.7
+	github.com/elastic/go-elasticsearch/v8 v8.4.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.4.0
@@ -13,6 +15,7 @@ require (
 )
 
 require (
+	github.com/elastic/elastic-transport-go/v8 v8.1.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect

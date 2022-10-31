@@ -50,3 +50,15 @@ lint-client: ## Run golangci-lint on Client
 	cd client; \
 	go vet ./...
 	echo "Golangci-lint and vet tests are finished successful"
+
+create-elastic:
+	docker network create elastic
+
+run-elastic: ##Run elasticsearch container
+	docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+
+run-kibana: ## Run Kibana container
+	docker run --name kib-01 --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:7.4.0
+
+up-elastic:
+	docker-compose -f docker-compose.elastic.yml up
