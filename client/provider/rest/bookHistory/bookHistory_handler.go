@@ -1,14 +1,10 @@
 package rest
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
 
-	controllers2 "github.com/PavelDonchenko/bookstorejRPC/client/controllers/bookHandler"
+	controllers2 "github.com/PavelDonchenko/bookstorejRPC/client/controllers/bookHistory"
 	pb "github.com/PavelDonchenko/bookstorejRPC/client/gen/proto"
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
@@ -85,54 +81,4 @@ func (h *RouterBookHistoryHandler) DeleteBookHistory(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"response": res})
-}
-
-func (h *RouterBookHistoryHandler) SearchBookHistory(ctx *gin.Context) {
-	var query string
-	if query, _ = ctx.GetQuery("q"); query == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "no search query present"})
-		return
-	}
-
-	body := fmt.Sprintf(
-		`{"query": {"multi_match": {"query": "%s", "fields": ["title", "body"]}}}`,
-		query)
-	res, err := h.ESClient.Search(
-		h.ESClient.Search.WithContext(context.Background()),
-		h.ESClient.Search.WithIndex("posts"),
-		h.ESClient.Search.WithBody(strings.NewReader(body)),
-		h.ESClient.Search.WithPretty(),
-	)
-	if err != nil {
-		fmt.Errorf("elasticsearch error")
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	defer res.Body.Close()
-
-	if res.IsError() {
-		var e map[string]interface{}
-		if err := json.NewDecoder(res.Body).Decode(&e); err != nil {
-			fmt.Errorf("error parsing the response body")
-		} else {
-			// Print the response status and error information.
-			fmt.Errorf("failed to search query: [%s] %s: %s",
-				res.Status(),
-				e["error"].(map[string]interface{})["type"],
-				e["error"].(map[string]interface{})["reason"],
-			)
-		}
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": e["error"].(map[string]interface{})["reason"]})
-		return
-	}
-
-	fmt.Printf("res", res.Status())
-
-	var r map[string]interface{}
-	if err := json.NewDecoder(res.Body).Decode(&r); err != nil {
-		fmt.Println("elasticsearch error")
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	ctx.JSON(http.StatusOK, gin.H{"data": r["hits"]})
 }

@@ -79,7 +79,7 @@ func (b *BookRepo) UpdateBook(book model.Book) (*model.Book, error) {
 		"updated_at":  time.Now(),
 	}).Error
 	if err != nil {
-		fmt.Println("erro: %v", err)
+		fmt.Printf("erro: %v\n", err)
 		return &model.Book{}, err
 	}
 	return booktake, nil

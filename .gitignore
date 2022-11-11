@@ -1,3 +1,4 @@
 /.idea
 /server/cmd/main/main.exe
 server/.env
+/elasticsearch-data

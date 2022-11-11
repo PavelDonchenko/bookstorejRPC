@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -104,7 +103,6 @@ func (h *routerUserHandler) UpdateUser(ctx *gin.Context) {
 	}
 
 	book := pb.UserItem{Id: uint32(uid), Nickname: input.Nickname, Email: input.Email, Password: input.Password}
-	fmt.Print(book)
 	res, err := h.c.UpdateUser(&book)
 
 	if err != nil {

@@ -26,5 +26,4 @@ type BookHistoryRepository interface {
 	GetOneBookHistory(ctx context.Context, id uint64) (model.BookHistory, error)
 	InsertBookHistory(ctx context.Context, bh model.BookHistory) error
 	DeleteBookHistory(ctx context.Context, id uint64) (bool, error)
-	SearchBookHistory(ctx context.Context, query string) ([]model.BookHistory, error)
 }

@@ -1,5 +1,8 @@
 APP_NAME=bookstorecrud
 
+all_docker: lint-client lint-server up up-elastic
+all: lint-server lint-server up-elastic runS runC
+
 create_proto:
 	cd server; \
 	protoc --proto_path=proto proto/*.proto --go_out=gen/
@@ -26,7 +29,7 @@ dev: ## Run container in development mode
 
 # Build and run the container
 up: ## Spin up the project
-	docker-compose up
+	docker-compose -f docker-compose.yml up
 
 start: ## Start running containers
 	docker-compose start
@@ -42,14 +45,14 @@ lint-server: ## Run golangci-lint on Server
 	golangci-lint run
 	cd server; \
 	go vet ./...
-	echo "Golangci-lint and vet tests are finished successful"
+	@echo "Golangci-lint and vet tests are finished successful"
 
 lint-client: ## Run golangci-lint on Client
 	cd client; \
 	golangci-lint run
 	cd client; \
 	go vet ./...
-	echo "Golangci-lint and vet tests are finished successful"
+	@echo "Golangci-lint and vet tests are finished successful"
 
 create-elastic:
 	docker network create elastic
@@ -62,3 +65,7 @@ run-kibana: ## Run Kibana container
 
 up-elastic:
 	docker-compose -f docker-compose.elastic.yml up
+
+get-grpc:
+	go get google.golang.org/protobuf/cmd/protoc-gen-go \
+             google.golang.org/grpc/cmd/protoc-gen-go-grpc

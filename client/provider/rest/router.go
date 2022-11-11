@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	controllers3 "github.com/PavelDonchenko/bookstorejRPC/client/controllers/book"
-	controllers2 "github.com/PavelDonchenko/bookstorejRPC/client/controllers/bookHandler"
+	controllers2 "github.com/PavelDonchenko/bookstorejRPC/client/controllers/bookHistory"
 	controllers "github.com/PavelDonchenko/bookstorejRPC/client/controllers/user"
 	rest2 "github.com/PavelDonchenko/bookstorejRPC/client/provider/rest/book"
 	rest3 "github.com/PavelDonchenko/bookstorejRPC/client/provider/rest/bookHistory"
@@ -37,7 +37,6 @@ func CreateAllRoutes(cu *controllers.BaseUserHandler, cb *controllers3.BaseBookH
 	router.POST("/book-history", bhh.CreateBookHistory)
 	router.GET("/book-history/:id", bhh.GetOneBookHistory)
 	router.DELETE("/book-history/:id", bhh.DeleteBookHistory)
-	router.GET("/search", bhh.SearchBookHistory)
 
 	router.Run(":8082")
 

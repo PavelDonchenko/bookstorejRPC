@@ -139,7 +139,7 @@ func (u *UserRepo) UpdateUser(user model.User) (*model.User, error) {
 		"updated_at": time.Now(),
 	}).Error
 	if err != nil {
-		fmt.Println("erro: %v", err)
+		fmt.Printf("error: %v\n", err)
 		return &model.User{}, err
 	}
 	return usertake, nil

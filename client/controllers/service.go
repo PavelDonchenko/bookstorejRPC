@@ -20,7 +20,7 @@ type BookApiController interface {
 	DeleteBook(id uint32) (*pb.DeleteBookResponse, error)
 }
 
-type BookHandlerApiControllers interface {
+type BookHistoryApiControllers interface {
 	GetOneBookHistory(id uint64) (*pb.GetOneHistoryResponse, error)
 	InsertBookHistory(bh *pb.BookHistoryItem) (*pb.InsertHistoryResponse, error)
 	DeleteBookHistory(id uint64) (*pb.DeleteHistoryResponse, error)
