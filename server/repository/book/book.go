@@ -8,12 +8,14 @@ import (
 	"time"
 
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
+	"github.com/PavelDonchenko/bookstorejRPC/server/repository"
 	"github.com/jinzhu/gorm"
 )
 
 type BookRepo struct {
-	db   *gorm.DB
-	book *model.Book
+	db        *gorm.DB
+	book      *model.Book
+	IBookRepo repository.BookRepository
 }
 
 func NewBookRepo(db *gorm.DB) *BookRepo {

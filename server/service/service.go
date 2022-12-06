@@ -7,6 +7,8 @@ import (
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/service.go
+
 type UserService interface {
 	GetUser(id uint32) (*pb.GetUserResponse, error)
 	GetAllUsers(page uint32) (*pb.GetAllUsersResponse, error)
