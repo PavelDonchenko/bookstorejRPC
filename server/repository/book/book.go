@@ -8,12 +8,14 @@ import (
 	"time"
 
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
+	"github.com/PavelDonchenko/bookstorejRPC/server/repository"
 	"github.com/jinzhu/gorm"
 )
 
 type BookRepo struct {
-	db   *gorm.DB
-	book *model.Book
+	db        *gorm.DB
+	book      *model.Book
+	IBookRepo repository.BookRepository
 }
 
 func NewBookRepo(db *gorm.DB) *BookRepo {
@@ -79,7 +81,7 @@ func (b *BookRepo) UpdateBook(book model.Book) (*model.Book, error) {
 		"updated_at":  time.Now(),
 	}).Error
 	if err != nil {
-		fmt.Println("erro: %v", err)
+		fmt.Printf("erro: %v\n", err)
 		return &model.Book{}, err
 	}
 	return booktake, nil

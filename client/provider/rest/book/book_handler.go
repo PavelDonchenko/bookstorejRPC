@@ -64,6 +64,11 @@ func (h *routerBookHandler) GetBook(ctx *gin.Context) {
 }
 
 func (h *routerBookHandler) CreateBook(ctx *gin.Context) {
+	type BookInput struct {
+		Id         uint32 `json:"id"`
+		Name       string `json:"name"`
+		BookAuthor string `json:"bookAuthor"`
+	}
 	var input BookInput
 
 	if err := ctx.ShouldBindJSON(&input); err != nil {

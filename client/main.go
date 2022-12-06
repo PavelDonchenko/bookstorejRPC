@@ -1,8 +1,9 @@
 package main
 
 import (
-	controllers3 "github.com/PavelDonchenko/bookstorejRPC/client/controllers/book"
-	controllers2 "github.com/PavelDonchenko/bookstorejRPC/client/controllers/user"
+	bookControllers "github.com/PavelDonchenko/bookstorejRPC/client/controllers/book"
+	bookHistoryControllers "github.com/PavelDonchenko/bookstorejRPC/client/controllers/bookHistory"
+	userControllers "github.com/PavelDonchenko/bookstorejRPC/client/controllers/user"
 	"github.com/PavelDonchenko/bookstorejRPC/client/provider/rest"
 	"google.golang.org/grpc"
 
@@ -18,9 +19,11 @@ func main() {
 
 	clientUser := pb.NewUserClient(conn)
 	clientBook := pb.NewBookClient(conn)
+	clientBookHistory := pb.NewBookHistoryClient(conn)
 
-	handlerUser := controllers2.NewBaseUserHandler(clientUser)
-	handlerBook := controllers3.NewBaseBookHandler(clientBook)
+	handlerUser := userControllers.NewBaseUserHandler(clientUser)
+	handlerBook := bookControllers.NewBaseBookHandler(clientBook)
+	handlerBookHistory := bookHistoryControllers.NewBaseBookHistoryHandler(clientBookHistory)
 
-	rest.CreateAllRoutes(handlerUser, handlerBook)
+	rest.CreateAllRoutes(handlerUser, handlerBook, handlerBookHistory)
 }

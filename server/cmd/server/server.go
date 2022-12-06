@@ -51,7 +51,24 @@ func RunServer() {
 
 	defer sqlDB.Close()
 
+	//// Bootstrap elasticsearch.
+	//elastic, err := bookHistory.New([]string{"http://localhost:9200"})
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+	//fmt.Println("created ElasticSearch client")
+	//
+	//if err := elastic.CreateIndex("book-history"); err != nil {
+	//	log.Fatalln(err)
+	//}
+	//fmt.Println("created ElasticSearch index")
+
 	s := grpc.NewServer()
+
+	//// Bootstrap storage.
+	//bookHistoryRepo := bookHistory.NewBookHistoryStorage(*elastic)
+	//bhs := service3.NewBookHistoryService(bookHistoryRepo)
+	//bhh := grpcHandler.NewBookHistoryHandler(bhs)
 
 	userRepo := repository.NewUserRepo(db)
 	us := service.NewUserService(userRepo)
@@ -63,6 +80,7 @@ func RunServer() {
 
 	pb.RegisterUserServer(s, uh)
 	pb.RegisterBookServer(s, bh)
+	//pb.RegisterBookHistoryServer(s, bhh)
 
 	fmt.Println("Server successfully started on port :8800")
 	listener, err := net.Listen("tcp", ":8800")

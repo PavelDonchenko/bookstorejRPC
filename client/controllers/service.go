@@ -1,6 +1,8 @@
 package controllers
 
-import pb "github.com/PavelDonchenko/bookstorejRPC/client/gen/proto"
+import (
+	pb "github.com/PavelDonchenko/bookstorejRPC/client/gen/proto"
+)
 
 type UserApiController interface {
 	GetAllUsers(page uint32) (*pb.GetAllUsersResponse, error)
@@ -16,4 +18,10 @@ type BookApiController interface {
 	CreateBook(u *pb.BookItem) (*pb.CreateBookResponse, error)
 	UpdateBook(u *pb.BookItem) (*pb.UpdateBookResponse, error)
 	DeleteBook(id uint32) (*pb.DeleteBookResponse, error)
+}
+
+type BookHistoryApiControllers interface {
+	GetOneBookHistory(id uint64) (*pb.GetOneHistoryResponse, error)
+	InsertBookHistory(bh *pb.BookHistoryItem) (*pb.InsertHistoryResponse, error)
+	DeleteBookHistory(id uint64) (*pb.DeleteHistoryResponse, error)
 }

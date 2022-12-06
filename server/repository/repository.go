@@ -1,8 +1,12 @@
 package repository
 
 import (
+	"context"
+
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 )
+
+//go:generate mockgen -source=repository.go -destination=mock/repository.go
 
 type UserRepository interface {
 	GetAllUsers(offset int, limit int) ([]model.User, error)
@@ -18,4 +22,10 @@ type BookRepository interface {
 	CreateBook(u model.Book) (model.Book, error)
 	UpdateBook(u model.Book) (*model.Book, error)
 	DeleteBook(id uint32) (bool, error)
+}
+
+type BookHistoryRepository interface {
+	GetOneBookHistory(ctx context.Context, id uint64) (model.BookHistory, error)
+	InsertBookHistory(ctx context.Context, bh model.BookHistory) error
+	DeleteBookHistory(ctx context.Context, id uint64) (bool, error)
 }

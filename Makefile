@@ -1,5 +1,8 @@
 APP_NAME=bookstorecrud
 
+all_docker: lint-client lint-server up up-elastic
+all: lint-server lint-server up-elastic runS runC
+
 create_proto:
 	cd server; \
 	protoc --proto_path=proto proto/*.proto --go_out=gen/
@@ -26,7 +29,7 @@ dev: ## Run container in development mode
 
 # Build and run the container
 up: ## Spin up the project
-	docker-compose up
+	docker-compose -f docker-compose.yml up
 
 start: ## Start running containers
 	docker-compose start
@@ -42,11 +45,45 @@ lint-server: ## Run golangci-lint on Server
 	golangci-lint run
 	cd server; \
 	go vet ./...
-	echo "Golangci-lint and vet tests are finished successful"
+	@echo "Golangci-lint and vet tests are finished successful"
 
 lint-client: ## Run golangci-lint on Client
 	cd client; \
 	golangci-lint run
 	cd client; \
 	go vet ./...
-	echo "Golangci-lint and vet tests are finished successful"
+	@echo "Golangci-lint and vet tests are finished successful"
+
+create-elastic:
+	docker network create elastic
+
+run-elastic: ##Run elasticsearch container
+	docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+
+run-kibana: ## Run Kibana container
+	docker run --name kib-01 --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:7.4.0
+
+up-elastic:
+	docker-compose -f docker-compose.elastic.yml up
+
+get-grpc:
+	go get google.golang.org/protobuf/cmd/protoc-gen-go \
+             google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+mock_gen:
+	go generate ./...
+
+
+<<<<<<< HEAD
+MOCKS_DESTINATION=server/qmocks
+=======
+MOCKS_DESTINATION=mocks
+>>>>>>> 9cb0b237eaa0ab08771f27a22cdb8df7ecb3d57c
+.PHONY: mocks
+# put the files with interfaces you'd like to mock in prerequisites
+# wildcards are allowed
+mocks: server/service/service.go server/repository/repository.go
+	@echo "Generating mocks..."
+	@rm -rf $(MOCKS_DESTINATION)
+	@for file in $^; do mockgen -source=$$file -destination=$(MOCKS_DESTINATION)/$$file; done
+

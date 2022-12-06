@@ -1,9 +1,13 @@
 package service
 
 import (
+	"context"
+
 	pb "github.com/PavelDonchenko/bookstorejRPC/server/gen/proto"
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 )
+
+//go:generate mockgen -source=service.go -destination=mocks/service.go
 
 type UserService interface {
 	GetUser(id uint32) (*pb.GetUserResponse, error)
@@ -19,4 +23,10 @@ type BookService interface {
 	CreateBook(u model.Book) (*pb.CreateBookResponse, error)
 	UpdateBook(u model.Book) (*pb.UpdateBookResponse, error)
 	DeleteBook(id uint32) (*pb.DeleteBookResponse, error)
+}
+
+type BookHistoryService interface {
+	GetOneBookHistory(ctx context.Context, id uint64) (*pb.GetOneHistoryResponse, error)
+	InsertBookHistory(ctx context.Context, bh model.BookHistory) (*pb.InsertHistoryResponse, error)
+	DeleteBookHistory(ctx context.Context, id uint64) (*pb.DeleteHistoryResponse, error)
 }

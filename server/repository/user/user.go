@@ -18,6 +18,7 @@ import (
 type UserRepo struct {
 	db   *gorm.DB
 	user *model.User
+	//bookRepo *repository.BookRepository
 }
 
 func NewUserRepo(db *gorm.DB) *UserRepo {
@@ -138,7 +139,7 @@ func (u *UserRepo) UpdateUser(user model.User) (*model.User, error) {
 		"updated_at": time.Now(),
 	}).Error
 	if err != nil {
-		fmt.Println("erro: %v", err)
+		fmt.Printf("error: %v\n", err)
 		return &model.User{}, err
 	}
 	return usertake, nil
