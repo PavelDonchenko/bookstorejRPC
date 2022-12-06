@@ -74,7 +74,11 @@ mock_gen:
 	go generate ./...
 
 
+<<<<<<< HEAD
 MOCKS_DESTINATION=server/qmocks
+=======
+MOCKS_DESTINATION=mocks
+>>>>>>> 9cb0b237eaa0ab08771f27a22cdb8df7ecb3d57c
 .PHONY: mocks
 # put the files with interfaces you'd like to mock in prerequisites
 # wildcards are allowed
