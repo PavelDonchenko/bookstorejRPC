@@ -6,6 +6,8 @@ import (
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 )
 
+//go:generate mockgen -source=repository.go -destination=mock/repository.go
+
 type UserRepository interface {
 	GetAllUsers(offset int, limit int) ([]model.User, error)
 	GetUser(id uint32) (*model.User, error)

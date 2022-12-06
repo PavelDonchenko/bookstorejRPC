@@ -10,10 +10,8 @@ import (
 	model "github.com/PavelDonchenko/bookstorejRPC/server/models"
 	grpcHandler "github.com/PavelDonchenko/bookstorejRPC/server/provider/grpc"
 	repository2 "github.com/PavelDonchenko/bookstorejRPC/server/repository/book"
-	"github.com/PavelDonchenko/bookstorejRPC/server/repository/bookHistory"
 	repository "github.com/PavelDonchenko/bookstorejRPC/server/repository/user"
 	service2 "github.com/PavelDonchenko/bookstorejRPC/server/service/book"
-	service3 "github.com/PavelDonchenko/bookstorejRPC/server/service/bookHistory"
 	service "github.com/PavelDonchenko/bookstorejRPC/server/service/user"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -53,24 +51,24 @@ func RunServer() {
 
 	defer sqlDB.Close()
 
-	// Bootstrap elasticsearch.
-	elastic, err := bookHistory.New([]string{"http://localhost:9200"})
-	if err != nil {
-		log.Fatalln(err)
-	}
-	fmt.Println("created ElasticSearch client")
-
-	if err := elastic.CreateIndex("book-history"); err != nil {
-		log.Fatalln(err)
-	}
-	fmt.Println("created ElasticSearch index")
+	//// Bootstrap elasticsearch.
+	//elastic, err := bookHistory.New([]string{"http://localhost:9200"})
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+	//fmt.Println("created ElasticSearch client")
+	//
+	//if err := elastic.CreateIndex("book-history"); err != nil {
+	//	log.Fatalln(err)
+	//}
+	//fmt.Println("created ElasticSearch index")
 
 	s := grpc.NewServer()
 
-	// Bootstrap storage.
-	bookHistoryRepo := bookHistory.NewBookHistoryStorage(*elastic)
-	bhs := service3.NewBookHistoryService(bookHistoryRepo)
-	bhh := grpcHandler.NewBookHistoryHandler(bhs)
+	//// Bootstrap storage.
+	//bookHistoryRepo := bookHistory.NewBookHistoryStorage(*elastic)
+	//bhs := service3.NewBookHistoryService(bookHistoryRepo)
+	//bhh := grpcHandler.NewBookHistoryHandler(bhs)
 
 	userRepo := repository.NewUserRepo(db)
 	us := service.NewUserService(userRepo)
@@ -82,7 +80,7 @@ func RunServer() {
 
 	pb.RegisterUserServer(s, uh)
 	pb.RegisterBookServer(s, bh)
-	pb.RegisterBookHistoryServer(s, bhh)
+	//pb.RegisterBookHistoryServer(s, bhh)
 
 	fmt.Println("Server successfully started on port :8800")
 	listener, err := net.Listen("tcp", ":8800")

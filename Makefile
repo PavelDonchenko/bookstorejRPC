@@ -69,3 +69,17 @@ up-elastic:
 get-grpc:
 	go get google.golang.org/protobuf/cmd/protoc-gen-go \
              google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+mock_gen:
+	go generate ./...
+
+
+MOCKS_DESTINATION=server/qmocks
+.PHONY: mocks
+# put the files with interfaces you'd like to mock in prerequisites
+# wildcards are allowed
+mocks: server/service/service.go server/repository/repository.go
+	@echo "Generating mocks..."
+	@rm -rf $(MOCKS_DESTINATION)
+	@for file in $^; do mockgen -source=$$file -destination=$(MOCKS_DESTINATION)/$$file; done
+
